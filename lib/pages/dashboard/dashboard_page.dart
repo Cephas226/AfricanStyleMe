@@ -7,6 +7,7 @@ import 'package:getx_app/pages/home/home_page.dart';
 import 'package:getx_app/model/user_model.dart';
 import 'package:getx_app/pages/news/new_page.dart';
 
+import '../../main.dart';
 import 'dashboard_controller.dart';
 
 class DashboardPage extends StatelessWidget {
@@ -26,9 +27,10 @@ class DashboardPage extends StatelessWidget {
               ],
             ),
           ),
+          drawer: MainDrawer(),
           bottomNavigationBar: BottomNavigationBar(
             unselectedItemColor: Colors.black,
-            selectedItemColor: Colors.redAccent,
+            selectedItemColor: Colors.indigoAccent,
             onTap: controller.changeTabIndex,
             currentIndex: controller.tabIndex,
             showSelectedLabels: false,

@@ -51,6 +51,14 @@ class ModelPage extends GetView<ModelDetailsController> {
             ),
           ),
           Positioned(
+              top: 365,
+              left: 90,
+              child: CircleAvatar(
+                  radius: 20.0,
+                  foregroundColor: Colors.grey,
+                  backgroundColor: Colors.grey.shade200,
+                  child: Icon(Icons.download_sharp))),
+          Positioned(
             top: 365,
             left: 40,
             child: CircleAvatar(
