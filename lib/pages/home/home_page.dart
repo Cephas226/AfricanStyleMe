@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:get/get.dart';
+import 'package:getx_app/widget/customicon.dart';
 import 'package:getx_app/widget/details.dart';
 import 'package:getx_app/widget/network_image.dart';
 import 'package:getx_app/widget/photohero.dart';
@@ -172,113 +173,118 @@ class HomePage extends GetView<HomeController> {
                 child: new Column(
                   children: <Widget>[
                     Container(
-                      decoration: BoxDecoration(color: Colors.indigoAccent),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Column(
-                            children: [
-                              SizedBox(
-                                height: 10,
-                              ),
-                              Icon(
-                                Icons.photo_camera,
-                                color: Colors.white,
-                                size: 24.0,
-                              ),
-                              SizedBox(
-                                height: 10,
-                              ),
-                            ],
-                          ),
-                          SizedBox(width: 50),
-                          Column(
-                            children: [
-                              SizedBox(
-                                height: 10,
-                              ),
-                              Icon(
-                                Icons.stars,
-                                color: Colors.white,
-                                size: 24.0,
-                              ),
-                              SizedBox(
-                                height: 10,
-                              ),
-                            ],
-                          ),
-                          SizedBox(width: 50),
-                          Column(
-                            children: [
-                              SizedBox(
-                                height: 10,
-                              ),
-                              Icon(
-                                Icons.video_library_sharp,
-                                color: Colors.white,
-                                size: 24.0,
-                              ),
-                              SizedBox(
-                                height: 10,
-                              )
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                    SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: Row(
+                      height: 420.0,
+                      child: Stack(
                         children: <Widget>[
-                          _buildChip('Récent', Colors.grey),
-                          SizedBox(width: 10),
-                          _buildChip('Mieux notés', Colors.grey),
-                          SizedBox(width: 10),
-                          _buildChip('Popuplaires', Colors.grey),
-                          SizedBox(width: 10),
-                          _buildChip('Aléatoire', Colors.grey),
-                        ],
-                      ),
-                    ),
-                    Expanded(
-                      child: Scaffold(
-                          body: new Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: new StaggeredGridView.countBuilder(
-                          crossAxisCount: 2,
-                          crossAxisSpacing: 12,
-                          mainAxisSpacing: 12,
-                          itemCount: imageList.length,
-                          itemBuilder: (BuildContext context, int index) =>
-                              GestureDetector(
-                            onTap: () {
-                              Navigator.of(context).push(
-                                  MaterialPageRoute<void>(
-                                      builder: (BuildContext context) {
-                                return ModelPage();
-                              }));
-                            },
+                          ClipPath(
+                            clipper: Mclipper(),
                             child: Container(
-                              decoration: BoxDecoration(
-                                  color: Colors.transparent,
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(12))),
-                              child: ClipRRect(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(12)),
-                                child: FadeInImage.memoryNetwork(
-                                    placeholder: kTransparentImage,
-                                    image: imageList[index],
-                                    fit: BoxFit.cover),
+                              height: 370.0,
+                              decoration: BoxDecoration(color: Colors.white, boxShadow: [
+                                BoxShadow(
+                                    color: Colors.black12,
+                                    offset: Offset(0.0, 10.0),
+                                    blurRadius: 10.0)
+                              ]),
+                              child: Stack(
+                                children: <Widget>[
+                                  Image.asset("assets/images/banner.png",
+                                      fit: BoxFit.cover, width: double.infinity),
+                                  Container(
+                                    height: double.infinity,
+                                    width: double.infinity,
+                                    decoration: BoxDecoration(
+                                        gradient: LinearGradient(
+                                            colors: [
+                                              const Color(0x00000000),
+                                              const Color(0xD9333333)
+                                            ],
+                                            stops: [
+                                              0.0,
+                                              0.9
+                                            ],
+                                            begin: FractionalOffset(0.0, 0.0),
+                                            end: FractionalOffset(0.0, 1.0))),
+                                    child: Padding(
+                                      padding: EdgeInsets.only(top: 120.0, left: 95.0),
+                                      child: Column(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: <Widget>[
+                                          Text(
+                                            "WATCH BEFORE EVERONE",
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 15.0,
+                                                fontFamily: "SF-Pro-Display-Bold"),
+                                          ),
+                                          Text(
+                                            "The Punisher: Season 2",
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 45.0,
+                                                fontFamily: "SF-Pro-Display-Bold"),
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                  )
+                                ],
                               ),
                             ),
                           ),
-                          staggeredTileBuilder: (index) {
-                            return new StaggeredTile.count(
-                                1, index.isEven ? 1.2 : 1.8);
-                          },
-                        ),
-                      )),
+                          Positioned(
+                            top: 370.0,
+                            right: -20.0,
+                            child: FractionalTranslation(
+                              translation: Offset(0.0, -0.5),
+                              child: Row(
+                                children: <Widget>[
+                                  FloatingActionButton(
+                                    backgroundColor: Colors.white,
+                                    onPressed: () {},
+                                    child: Icon(
+                                      Icons.add,
+                                      color: Color(0xFFE52020),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    width: 12.0,
+                                  ),
+                                  ClipRRect(
+                                    borderRadius: BorderRadius.circular(30.0),
+                                    child: RaisedButton(
+                                      onPressed: () {},
+                                      color: Color(0xFFE52020),
+                                      padding: EdgeInsets.symmetric(
+                                          vertical: 15.0, horizontal: 80.0),
+                                      child: Row(
+                                        children: <Widget>[
+                                          Text(
+                                            "Watch Now",
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 15.0,
+                                                fontFamily: "SF-Pro-Display-Bold"),
+                                          ),
+                                          SizedBox(
+                                            width: 5.0,
+                                          ),
+                                          RotatedBox(
+                                            quarterTurns: 2,
+                                            child: Icon(CustomIcons.back_icon,
+                                                size: 25.0, color: Colors.white),
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
                     )
                   ],
                 ),
@@ -303,4 +309,27 @@ Widget _buildChip(String label, Color color) {
     shadowColor: Colors.grey[60],
     padding: EdgeInsets.all(10.0),
   );
+}
+class Mclipper extends CustomClipper<Path> {
+  @override
+  Path getClip(Size size) {
+    var path = new Path();
+    path.lineTo(0.0, size.height - 100.0);
+
+    var controlpoint = Offset(35.0, size.height);
+    var endpoint = Offset(size.width / 2, size.height);
+
+    path.quadraticBezierTo(
+        controlpoint.dx, controlpoint.dy, endpoint.dx, endpoint.dy);
+
+    path.lineTo(size.width, size.height);
+    path.lineTo(size.width, 0.0);
+
+    return path;
+  }
+
+  @override
+  bool shouldReclip(CustomClipper<Path> oldClipper) {
+    return true;
+  }
 }
