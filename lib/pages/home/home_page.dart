@@ -31,38 +31,60 @@ class HomePage extends GetView<HomeController> {
         backgroundColor: Colors.white,
       ),
       body: SafeArea(
-        child: Container(
-            margin: EdgeInsets.all(12),
-            child: new StaggeredGridView.countBuilder(
-                crossAxisCount: 2,
-                crossAxisSpacing: 12,
-                mainAxisSpacing: 12,
-                itemCount: imageList.length,
-                itemBuilder: (context, index) {
-                  return GestureDetector(
-                    onTap: () {
-                      Navigator.of(context).push(MaterialPageRoute<void>(
-                          builder: (BuildContext context) {
-                        return ModelPage();
-                      }));
-                    },
-                    child: Container(
-                      decoration: BoxDecoration(
-                          color: Colors.transparent,
-                          borderRadius: BorderRadius.all(Radius.circular(12))),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.all(Radius.circular(12)),
-                        child: FadeInImage.memoryNetwork(
-                            placeholder: kTransparentImage,
-                            image: imageList[index],
-                            fit: BoxFit.cover),
-                      ),
-                    ),
-                  );
-                },
-                staggeredTileBuilder: (index) {
-                  return new StaggeredTile.count(1, index.isEven ? 1.2 : 1.8);
-                })),
+        child: new Column(
+          children: <Widget>[
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                children: <Widget>[
+                  _buildChip('Gamer', Color(0xFFff6666)),
+                  _buildChip('Hacker', Color(0xFF007f5c)),
+                  _buildChip('Developer', Color(0xFF5f65d3)),
+                  _buildChip('Racer', Color(0xFF19ca21)),
+                  _buildChip('Traveller', Color(0xFF60230b)),
+                ],
+              ),
+            ),
+            Expanded(
+              child: Scaffold(
+                  body: new Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: new StaggeredGridView.countBuilder(
+                    crossAxisCount: 2,
+                    crossAxisSpacing: 12,
+                    mainAxisSpacing: 12,
+                    itemCount: imageList.length,
+                    itemBuilder: (BuildContext context, int index) =>
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.of(context).push(
+                                MaterialPageRoute<void>(
+                                    builder: (BuildContext context) {
+                                      return ModelPage();
+                                    }));
+                          },
+                          child:  Container(
+                            decoration: BoxDecoration(
+                                color: Colors.transparent,
+                                borderRadius:
+                                BorderRadius.all(Radius.circular(12))),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.all(Radius.circular(12)),
+                              child: FadeInImage.memoryNetwork(
+                                  placeholder: kTransparentImage,
+                                  image: imageList[index],
+                                  fit: BoxFit.cover),
+                            ),
+                          ),
+                        ),
+                    staggeredTileBuilder: (index) {
+                  return new StaggeredTile.count(
+                  1, index.isEven ? 1.2 : 1.8);
+                  },),
+              )),
+            )
+          ],
+        ),
       ),
     );
   }
@@ -87,60 +109,3 @@ Widget _buildChip(String label, Color color) {
     padding: EdgeInsets.all(8.0),
   );
 }
-/*ListView(
-children: [
-CarouselSlider(
-items: [
-_buildChip('Gamer', Color(0xFFff6666)),
-_buildChip('Hacker', Color(0xFF007f5c)),
-_buildChip('Developer', Color(0xFF5f65d3)),
-_buildChip('Racer', Color(0xFF19ca21)),
-_buildChip('Traveller', Color(0xFF60230b)),
-],
-options: CarouselOptions(
-height: 180.0,
-enlargeCenterPage: true,
-autoPlay: true,
-aspectRatio: 16 / 9,
-autoPlayCurve: Curves.fastOutSlowIn,
-enableInfiniteScroll: true,
-autoPlayAnimationDuration: Duration(milliseconds: 800),
-viewportFraction: 0.8,
-),
-),
-],
-),
-Container(
-margin: EdgeInsets.all(12),
-child: new StaggeredGridView.countBuilder(
-crossAxisCount: 2,
-crossAxisSpacing: 12,
-mainAxisSpacing: 12,
-itemCount: imageList.length,
-itemBuilder: (context, index) {
-return
-GestureDetector(
-onTap: () {
-Navigator.of(context).push(MaterialPageRoute<void>(
-builder: (BuildContext context) {
-return ModelPage();
-}
-));
-},
-child: Container(
-decoration: BoxDecoration(
-color: Colors.transparent,
-borderRadius: BorderRadius.all(Radius.circular(12))),
-child: ClipRRect(
-borderRadius: BorderRadius.all(Radius.circular(12)),
-child: FadeInImage.memoryNetwork(
-placeholder: kTransparentImage,
-image: imageList[index],fit: BoxFit.cover
-),
-),
-),
-);
-},
-staggeredTileBuilder: (index) {
-return new StaggeredTile.count(1, index.isEven ? 1.2 : 1.8);
-}),*/
