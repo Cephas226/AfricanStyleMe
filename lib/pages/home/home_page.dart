@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:get/get.dart';
+import 'package:getx_app/pages/videos/video_page.dart';
 import 'package:getx_app/widget/customicon.dart';
 import 'package:getx_app/widget/details.dart';
 import 'package:getx_app/widget/network_image.dart';
@@ -14,16 +15,67 @@ import 'home_controller.dart';
 
 class HomePage extends GetView<HomeController> {
   List<String> imageList = [
-    'https://firebasestorage.googleapis.com/v0/b/yasms-efe24.appspot.com/o/1.jpg?alt=media&token=9ce0fbc2-e8df-4565-894c-d24a2f5fbb18',
     'https://firebasestorage.googleapis.com/v0/b/yasms-efe24.appspot.com/o/2.jpg?alt=media&token=eda824fd-3729-44c9-95b2-588b6967593a',
-    'https://firebasestorage.googleapis.com/v0/b/yasms-efe24.appspot.com/o/3.jpg?alt=media&token=d8d4dc46-39a2-472b-a37d-c4dd83ef518b',
+    'https://firebasestorage.googleapis.com/v0/b/yasms-efe24.appspot.com/o/2.jpg?alt=media&token=eda824fd-3729-44c9-95b2-588b6967593a',
     'https://firebasestorage.googleapis.com/v0/b/yasms-efe24.appspot.com/o/4.jpg?alt=media&token=00963d94-01cf-4d46-adc8-3f282460be3b',
     'https://firebasestorage.googleapis.com/v0/b/yasms-efe24.appspot.com/o/6.jpg?alt=media&token=0063b131-fd7d-48a6-9b4b-364c678ef1a4',
     'https://firebasestorage.googleapis.com/v0/b/yasms-efe24.appspot.com/o/7.jpg?alt=media&token=4d5e8cfb-8bd5-43dd-90f3-6c54e4113b9c',
     'https://firebasestorage.googleapis.com/v0/b/yasms-efe24.appspot.com/o/8.jpg?alt=media&token=adc21471-2539-4a66-aa9d-bd4c769d839d'
   ];
+
   @override
   Widget build(BuildContext context) {
+    CarouselController nextCarouselController = new CarouselController();
+    final HomeController _controller = Get.put(HomeController());
+    final List<Widget> imageSliders = imageList
+        .map((e) => ClipRRect(
+      child: Stack(
+        fit: StackFit.expand,
+        children: <Widget>[
+          Obx(() {
+            if (_controller.isLoading.value) {
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+            return Image.network(e,
+                width: double.infinity, fit: BoxFit.fill);
+          }),
+          Positioned(
+            left: 80,
+            top: 400,
+            child: Container(
+              child: Row(
+                children: [
+                  RatingBar.builder(
+                    initialRating: 3,
+                    minRating: 1,
+                    direction: Axis.horizontal,
+                    allowHalfRating: true,
+                    itemCount: 5,
+                    itemPadding: EdgeInsets.symmetric(
+                        horizontal: 4.0),
+                    itemBuilder: (context, _) => Icon(
+                      Icons.star,
+                      color: Colors.amber,
+                    ),
+                    onRatingUpdate: (rating) {
+                      print(rating);
+                      nextCarouselController.nextPage();
+                    },
+                  )
+                ],
+              ),
+              decoration: new BoxDecoration(
+                  color: Colors.white10,
+                  borderRadius: BorderRadius.all(
+                      Radius.circular(12))),
+            ),
+          ),
+        ],
+      ),
+    )).toList();
+
     return DefaultTabController(
       length: 3,
       child: Scaffold(
@@ -93,7 +145,8 @@ class HomePage extends GetView<HomeController> {
                                     BorderRadius.all(Radius.circular(12)),
                                 child: FadeInImage.memoryNetwork(
                                     placeholder: kTransparentImage,
-                                    image: imageList[index],
+                                    image:imageList[index],
+                                    //imageList[index],
                                     fit: BoxFit.cover),
                               ),
                             ),
@@ -112,182 +165,61 @@ class HomePage extends GetView<HomeController> {
                 child: new Column(
                   children: <Widget>[
                     Stack(children: [
-                      Row(
+                      /*Row(
                         children: [
-                          Flexible(child:  Container(
+                          Flexible(
+                              child: Container(
                             width: double.infinity,
-                            height: 650,
+                            height: 480,
                             decoration: BoxDecoration(
                                 color: Colors.transparent,
                                 borderRadius:
-                                BorderRadius.all(Radius.circular(12))),
+                                    BorderRadius.all(Radius.circular(12))),
                             child: ClipRRect(
                               borderRadius:
-                              BorderRadius.all(Radius.circular(1)),
+                                  BorderRadius.all(Radius.circular(1)),
                               child: FadeInImage.memoryNetwork(
                                   placeholder: kTransparentImage,
                                   image:
-                                  "https://firebasestorage.googleapis.com/v0/b/yasms-efe24.appspot.com/o/3.jpg?alt=media&token=d8d4dc46-39a2-472b-a37d-c4dd83ef518b",
+                                      "https://firebasestorage.googleapis.com/v0/b/yasms-efe24.appspot.com/o/3.jpg?alt=media&token=d8d4dc46-39a2-472b-a37d-c4dd83ef518b",
                                   fit: BoxFit.fill),
                             ),
                           ))
                         ],
-                      ),
-                      Positioned(
-                        left: 80,
-                        top: 600,
-                        child:
-                        Container(
-                          child:Row(
-                            children: [
-                              RatingBar.builder(
-                                initialRating: 3,
-                                minRating: 1,
-                                direction: Axis.horizontal,
-                                allowHalfRating: true,
-                                itemCount: 5,
-                                itemPadding:
-                                EdgeInsets.symmetric(horizontal: 4.0),
-                                itemBuilder: (context, _) => Icon(
-                                  Icons.star,
-                                  color: Colors.amber,
-                                ),
-                                onRatingUpdate: (rating) {
-                                  print(rating);
-                                },
-                              )
-                            ],
-                          ),
-                          decoration: new BoxDecoration(
-                              color: Colors.white10,
-                              borderRadius:
-                              BorderRadius.all(Radius.circular(12))
-                          ),
-                        ),
-                      ),
+                      )*/
+                      Container(
+                          child: CarouselSlider(
+                            options: CarouselOptions(
+                              enlargeCenterPage: true,
+                              height: 490,
+                              scrollDirection: Axis.vertical,
+                              initialPage: 2,
+                              viewportFraction: 1,
+                             aspectRatio: 16 / 9,
+                              enableInfiniteScroll: false,
+                              autoPlay: false,
+                            ),
+                            carouselController: nextCarouselController,
+                            items: imageSliders,
+                          )),
                     ])
                   ],
                 ),
               ),
-              SafeArea(
-                child: new Column(
-                  children: <Widget>[
-                    Container(
-                      height: 420.0,
-                      child: Stack(
-                        children: <Widget>[
-                          ClipPath(
-                            clipper: Mclipper(),
-                            child: Container(
-                              height: 370.0,
-                              decoration: BoxDecoration(color: Colors.white, boxShadow: [
-                                BoxShadow(
-                                    color: Colors.black12,
-                                    offset: Offset(0.0, 10.0),
-                                    blurRadius: 10.0)
-                              ]),
-                              child: Stack(
-                                children: <Widget>[
-                                  Image.asset("assets/images/banner.png",
-                                      fit: BoxFit.cover, width: double.infinity),
-                                  Container(
-                                    height: double.infinity,
-                                    width: double.infinity,
-                                    decoration: BoxDecoration(
-                                        gradient: LinearGradient(
-                                            colors: [
-                                              const Color(0x00000000),
-                                              const Color(0xD9333333)
-                                            ],
-                                            stops: [
-                                              0.0,
-                                              0.9
-                                            ],
-                                            begin: FractionalOffset(0.0, 0.0),
-                                            end: FractionalOffset(0.0, 1.0))),
-                                    child: Padding(
-                                      padding: EdgeInsets.only(top: 120.0, left: 95.0),
-                                      child: Column(
-                                        mainAxisAlignment: MainAxisAlignment.center,
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: <Widget>[
-                                          Text(
-                                            "WATCH BEFORE EVERONE",
-                                            style: TextStyle(
-                                                color: Colors.white,
-                                                fontSize: 15.0,
-                                                fontFamily: "SF-Pro-Display-Bold"),
-                                          ),
-                                          Text(
-                                            "The Punisher: Season 2",
-                                            style: TextStyle(
-                                                color: Colors.white,
-                                                fontSize: 45.0,
-                                                fontFamily: "SF-Pro-Display-Bold"),
-                                          )
-                                        ],
-                                      ),
-                                    ),
-                                  )
-                                ],
-                              ),
-                            ),
-                          ),
-                          Positioned(
-                            top: 370.0,
-                            right: -20.0,
-                            child: FractionalTranslation(
-                              translation: Offset(0.0, -0.5),
-                              child: Row(
-                                children: <Widget>[
-                                  FloatingActionButton(
-                                    backgroundColor: Colors.white,
-                                    onPressed: () {},
-                                    child: Icon(
-                                      Icons.add,
-                                      color: Color(0xFFE52020),
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    width: 12.0,
-                                  ),
-                                  ClipRRect(
-                                    borderRadius: BorderRadius.circular(30.0),
-                                    child: RaisedButton(
-                                      onPressed: () {},
-                                      color: Color(0xFFE52020),
-                                      padding: EdgeInsets.symmetric(
-                                          vertical: 15.0, horizontal: 80.0),
-                                      child: Row(
-                                        children: <Widget>[
-                                          Text(
-                                            "Watch Now",
-                                            style: TextStyle(
-                                                color: Colors.white,
-                                                fontSize: 15.0,
-                                                fontFamily: "SF-Pro-Display-Bold"),
-                                          ),
-                                          SizedBox(
-                                            width: 5.0,
-                                          ),
-                                          RotatedBox(
-                                            quarterTurns: 2,
-                                            child: Icon(CustomIcons.back_icon,
-                                                size: 25.0, color: Colors.white),
-                                          )
-                                        ],
-                                      ),
-                                    ),
-                                  )
-                                ],
-                              ),
-                            ),
-                          )
-                        ],
-                      ),
-                    )
-                  ],
+              CarouselSlider(
+                options: CarouselOptions(
+                  enlargeCenterPage: false,
+                  height: 1000,
+                  scrollDirection: Axis.vertical,
+                  viewportFraction: 1,
+                  aspectRatio: 16/9,
+                  enableInfiniteScroll: false,
+                  autoPlay: false,
                 ),
+                items: imageList.map((e) => ClipRRect(
+                    child:
+                    VideosPage()
+                )).toList(),
               )
             ],
           )),
@@ -310,6 +242,7 @@ Widget _buildChip(String label, Color color) {
     padding: EdgeInsets.all(10.0),
   );
 }
+
 class Mclipper extends CustomClipper<Path> {
   @override
   Path getClip(Size size) {
@@ -333,3 +266,4 @@ class Mclipper extends CustomClipper<Path> {
     return true;
   }
 }
+

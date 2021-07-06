@@ -1,9 +1,18 @@
-import 'package:flutter/material.dart';
+import 'package:getx_app/model/photo_model.dart';
+import 'package:http/http.dart' as http;
 
-import 'dark_theme.dart';
-import 'light_theme.dart';
+class Dataservices {
+  static var client = http.Client();
 
-class AppTheme {
-  static ThemeData light = lightTheme;
-  static ThemeData dark = darkTheme;
+  static Future<List<Photo>> getPhoto() async {
+    var response =
+    await client.get('https://jsonplaceholder.typicode.com/todos');
+
+    if (response.statusCode == 200) {
+      var data = response.body;
+      return todoFromJson(data);
+    } else {
+      return null;
+    }
+  }
 }

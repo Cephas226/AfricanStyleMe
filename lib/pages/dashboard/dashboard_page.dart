@@ -1,12 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:getx_app/pages/account/account_page.dart';
-import 'package:getx_app/pages/alerts/alerts_page.dart';
+import 'package:getx_app/pages/categories/categories_page.dart';
 import 'package:getx_app/pages/home/home_page.dart';
-import 'package:getx_app/model/user_model.dart';
-import 'package:getx_app/pages/news/new_page.dart';
-
+import 'package:getx_app/pages/favoris/favoris_page.dart';
 import '../../main.dart';
 import 'dashboard_controller.dart';
 
@@ -23,7 +20,7 @@ class DashboardPage extends StatelessWidget {
                 HomePage(),
                 CategoriesPage(),
                 FavorisPage(),
-                AccountPage(),
+             //   AccountPage(),
               ],
             ),
           ),
@@ -51,10 +48,10 @@ class DashboardPage extends StatelessWidget {
                 icon: CupertinoIcons.heart,
                 label: 'Favoris',
               ),
-              _bottomNavigationBarItem(
+              /*_bottomNavigationBarItem(
                 icon: CupertinoIcons.person,
                 label: 'Account',
-              ),
+              ),*/
             ],
           ),
         );

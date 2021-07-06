@@ -1,4 +1,4 @@
-package com.example.getx_app
+package com.example.monstyle
 
 import io.flutter.embedding.android.FlutterActivity
 

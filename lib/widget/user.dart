@@ -1,6 +1,6 @@
 import "package:flutter/material.dart";
-import 'package:getx_app/model/user_model.dart';
-import 'package:getx_app/pages/news/user_detail.dart';
+import 'package:getx_app/model/user_modelx.dart';
+import 'package:getx_app/pages/favoris/user_detail.dart';
 import 'package:getx_app/widget/details.dart';
 import 'package:getx_app/widget/photohero.dart';
 
@@ -17,8 +17,8 @@ class User extends StatelessWidget {
         padding: EdgeInsets.all(10),
         child: Row(
           children: <Widget>[
-        PhotoHero(
-        photo: _user.avatar,
+        Expanded(child:PhotoHero(
+          photo: _user.avatar,
           width: 400.0,
           onTap: () {
             Navigator.of(context).push(MaterialPageRoute<void>(
@@ -33,7 +33,7 @@ class User extends StatelessWidget {
                 }
             ));
           },
-        ),
+        )),
           ],
         ),
       ),

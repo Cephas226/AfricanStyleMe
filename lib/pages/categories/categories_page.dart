@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:getx_app/pages/alerts/alerts_controller.dart';
+import 'package:getx_app/pages/categories/categories_controller.dart';
 
 class CategoriesPage extends GetView<CategoriesController> {
   @override

@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:getx_app/model/user_model.dart';
-import 'package:getx_app/pages/news/news_controller.dart';
-import 'package:getx_app/widget/photohero.dart';
+import 'package:getx_app/model/user_modelx.dart';
+import 'package:getx_app/pages/favoris/favoris_controller.dart';
 import 'package:getx_app/widget/user.dart';
-import 'package:smooth_star_rating/smooth_star_rating.dart';
+
 
 class FavorisPage extends GetView<FavorisController> {
   final List<UserModel> _userlist = [

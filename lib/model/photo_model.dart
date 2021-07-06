@@ -1,17 +1,31 @@
-import 'package:http/http.dart' as http;
+import 'dart:convert';
 
-class Dataservices {
-  static var client = http.Client();
+List<Photo> todoFromJson(String str) =>
+    List<Photo>.from(json.decode(str).map((x) => Photo.fromJson(x)));
 
-  static Future<List<Photo>> getTodo() async {
-    var response =
-    await client.get('https://jsonplaceholder.typicode.com/todos');
+String todoToJson(List<Photo> data) =>
+    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
-    if (response.statusCode == 200) {
-      var data = response.body;
-      return todoFromJson(data);
-    } else {
-      return null;
-    }
-  }
+class Photo {
+  Photo({
+    this.photoId,
+    this.photoCode,
+    this.completed,
+  });
+
+  int photoId;
+  String photoCode;
+  bool completed;
+
+  factory Photo.fromJson(Map<String, dynamic> json) => Photo(
+    photoId: json["photoId"],
+    photoCode: json["photoCode"],
+    completed: json["completed"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "photoId": photoId,
+    "photoCode": photoCode,
+    "completed": completed,
+  };
 }
