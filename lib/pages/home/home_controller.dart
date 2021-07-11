@@ -8,6 +8,7 @@ import 'package:http/http.dart' as http;
 class HomeController extends GetxController {
   var isLoading = true.obs;
   var photoList = List<Photo>().obs;
+  var current = 0.obs;
   final String title = 'Accueil';
   @override
   void onInit() {

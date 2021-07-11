@@ -7,6 +7,7 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:get/get.dart';
 import 'package:getx_app/pages/videos/video_page.dart';
+import 'package:getx_app/widget/photohero.dart';
 import 'package:http/http.dart' as http;
 import 'package:transparent_image/transparent_image.dart';
 
@@ -14,21 +15,15 @@ import '../../main.dart';
 import 'home_controller.dart';
 
 class HomePage extends GetView<HomeController> {
-  List<String> imageList = [
-    'https://firebasestorage.googleapis.com/v0/b/yasms-efe24.appspot.com/o/2.jpg?alt=media&token=eda824fd-3729-44c9-95b2-588b6967593a',
-    'https://firebasestorage.googleapis.com/v0/b/yasms-efe24.appspot.com/o/2.jpg?alt=media&token=eda824fd-3729-44c9-95b2-588b6967593a',
-    'https://firebasestorage.googleapis.com/v0/b/yasms-efe24.appspot.com/o/4.jpg?alt=media&token=00963d94-01cf-4d46-adc8-3f282460be3b',
-    'https://firebasestorage.googleapis.com/v0/b/yasms-efe24.appspot.com/o/6.jpg?alt=media&token=0063b131-fd7d-48a6-9b4b-364c678ef1a4',
-    'https://firebasestorage.googleapis.com/v0/b/yasms-efe24.appspot.com/o/7.jpg?alt=media&token=4d5e8cfb-8bd5-43dd-90f3-6c54e4113b9c',
-    'https://firebasestorage.googleapis.com/v0/b/yasms-efe24.appspot.com/o/8.jpg?alt=media&token=adc21471-2539-4a66-aa9d-bd4c769d839d'
-  ];
+  List<String> imageList = [];
   @override
   Widget build(BuildContext context) {
     Future<List> fetchAds() async {
       final response =
           await http.get('https://myafricanstyle.herokuapp.com/product');
 
-      if (response.statusCode == 200) return json.decode(response.body);
+      if (response.statusCode == 200)
+      return json.decode(response.body);
       return [];
     }
 
@@ -38,15 +33,18 @@ class HomePage extends GetView<HomeController> {
     final List<Widget> imageSliders =
     _controller.photoList.map((e) => ClipRRect(
       child: Stack(
-        fit: StackFit.expand,
         children: <Widget>[
-          FadeInImage.memoryNetwork(
-              placeholder: kTransparentImage,
-              image: e.url,
-              fit: BoxFit.fill),
+          Container(
+            height: 600,
+            width: double.infinity,
+            child: FadeInImage.memoryNetwork(
+                placeholder: kTransparentImage,
+                image: e.url,
+                fit: BoxFit.fill),
+          ),
           Positioned(
             left: 80,
-            top: 590,
+            top: 500,
             child: Container(
               child: Row(
                 children: [
@@ -64,13 +62,12 @@ class HomePage extends GetView<HomeController> {
                     ),
                     onRatingUpdate: (rating) {
                       print(rating);
-                      nextCarouselController.nextPage();
                     },
                   )
                 ],
               ),
               decoration: new BoxDecoration(
-                  color: Colors.white10,
+                  color: Colors.white24,
                   borderRadius: BorderRadius.all(
                       Radius.circular(12))),
             ),
@@ -85,17 +82,7 @@ class HomePage extends GetView<HomeController> {
       child: Stack(
         fit: StackFit.expand,
         children: <Widget>[
-          Obx(() {
-            if (_controller.isLoading.value) {
-              return Center(
-                child: CircularProgressIndicator(),
-              );
-            }
-            return
-              VideosPage();
-            /*Image.network("https://myafricanstyle.herokuapp.com/files/1d732272-3238-4b81-9d7f-a7ffca75cc76",
-                width: double.infinity, fit: BoxFit.fill);*/
-          })
+          VideosPage()
         ],
       ),
     )).toList();
@@ -167,36 +154,225 @@ class HomePage extends GetView<HomeController> {
                                               fit: StackFit.passthrough,
                                               overflow: Overflow.visible,
                                               children: [
-                                                FadeInImage.memoryNetwork(
-                                                    placeholder: kTransparentImage,
-                                                    image: item["url"],
-                                                    fit: BoxFit.cover),
-                                                Positioned(
-                                                  left: 160,
-                                                  top: 50,
+                                                GestureDetector(
+                                                  onTap: () {
+                                                    Navigator.of(context).push(MaterialPageRoute<void>(
+                                                        builder: (BuildContext context) {
+                                                          return Scaffold(
+                                                            floatingActionButton: FloatingActionButton(
+                                                              onPressed: () {
+                                                                // Add your onPressed code here!
+                                                              },
+                                                              child: const Icon(Icons.file_download),
+                                                              backgroundColor: Colors.red,
+                                                            ),
+                                                            appBar: AppBar(
+                                                              backgroundColor: Colors.indigo,
+                                                              title: const Text('Details'),
+                                                            ),
+                                                            body:Stack(
+                                                              fit:StackFit.passthrough,
+                                                              children: [
+                                                                Container(
+                                                                  padding: const EdgeInsets.all(0.0),
+                                                                  height: double.infinity,
+                                                                  color: Colors.indigo,
+                                                                  child: PhotoHero(
+                                                                    photo:  item["url"],
+                                                                    width: double.infinity,
+                                                                    height: double.infinity,
+                                                                    onTap: () {
+                                                                      Navigator.of(context).pop();
+                                                                    },
+                                                                  ),
+                                                                ),
+                                                                Positioned(
+                                                                    bottom: 150,
+                                                                    left: 10,
+                                                                    child: Container(
+                                                                      width: 200,
+                                                                      decoration: new BoxDecoration(
+                                                                          color: Colors.white,
+                                                                          borderRadius: BorderRadius.all(
+                                                                              Radius.circular(12))),
+                                                                      child:
+                                                                      Row(
+                                                                        mainAxisAlignment: MainAxisAlignment.center,
+
+                                                                        children: [
+                                                                          Icon(
+                                                                            Icons.remove_red_eye_sharp,
+                                                                            color: Colors.blue,
+                                                                          ),
+                                                                          Text("20",
+                                                                            style: TextStyle(color: Colors.black),
+                                                                          ),
+                                                                          SizedBox(
+                                                                            width: 50,
+                                                                          ),
+                                                                          Icon(
+                                                                            Icons.stars_rounded,
+                                                                            color: Colors.blue,
+                                                                          ),
+                                                                          Text("4/5",
+                                                                            style: TextStyle(color: Colors.black),
+                                                                          ),
+                                                                        ],
+                                                                      ),
+                                                                    )),
+                                                              ],
+                                                            ),
+                                                          );
+                                                        }
+                                                    ));
+                                                  },
                                                   child: Container(
-                                                    child: Column(
+                                                    padding: EdgeInsets.all(12.0),
+                                                    decoration: BoxDecoration(
+                                                      color: Theme.of(context).buttonColor,
+                                                      borderRadius: BorderRadius.circular(8.0),
+                                                    ),
+                                                    child:
+                                                    FadeInImage.memoryNetwork(
+                                                        placeholder: kTransparentImage,
+                                                        image: item["url"],
+                                                        fit: BoxFit.cover),
+                                                  ),
+                                                ),
+                                                Positioned(
+                                                  left: 130,
+                                                  top: 0,
+                                                  child:
+                                                     Center(
+                                                       child:   Container(
+                                                         child: Column(
+                                                           children: [
+                                                             IconButton(
+                                                               onPressed: (){
+                                                                 Navigator.of(context).push(MaterialPageRoute<void>(
+                                                                     builder: (BuildContext context) {
+                                                                       return Scaffold(
+                                                                         floatingActionButton: FloatingActionButton(
+                                                                           onPressed: () {
+                                                                             // Add your onPressed code here!
+                                                                           },
+                                                                           child: const Icon(Icons.file_download),
+                                                                           backgroundColor: Colors.red,
+                                                                         ),
+                                                                         appBar: AppBar(
+                                                                           backgroundColor: Colors.indigo,
+                                                                           title: const Text('Details'),
+                                                                         ),
+                                                                         body:Stack(
+                                                                           fit:StackFit.passthrough,
+                                                                           children: [
+                                                                             Container(
+                                                                               padding: const EdgeInsets.all(0.0),
+                                                                               height: double.infinity,
+                                                                               color: Colors.indigo,
+                                                                               child: PhotoHero(
+                                                                                 photo:  item["url"],
+                                                                                 width: double.infinity,
+                                                                                 height: double.infinity,
+                                                                                 onTap: () {
+                                                                                   Navigator.of(context).pop();
+                                                                                 },
+                                                                               ),
+                                                                             ),
+                                                                             Positioned(
+                                                                                 bottom: 150,
+                                                                                 left: 10,
+                                                                                 child: Container(
+                                                                                   width: 200,
+                                                                                   decoration: new BoxDecoration(
+                                                                                       color: Colors.white,
+                                                                                       borderRadius: BorderRadius.all(
+                                                                                           Radius.circular(12))),
+                                                                                   child:
+                                                                                   Row(
+                                                                                     mainAxisAlignment: MainAxisAlignment.center,
+
+                                                                                     children: [
+                                                                                       Icon(
+                                                                                         Icons.remove_red_eye_sharp,
+                                                                                         color: Colors.blue,
+                                                                                       ),
+                                                                                       Text("20",
+                                                                                         style: TextStyle(color: Colors.black),
+                                                                                       ),
+                                                                                       SizedBox(
+                                                                                         width: 50,
+                                                                                       ),
+                                                                                       Icon(
+                                                                                         Icons.stars_rounded,
+                                                                                         color: Colors.blue,
+                                                                                       ),
+                                                                                       Text("4/5",
+                                                                                         style: TextStyle(color: Colors.black),
+                                                                                       ),
+                                                                                     ],
+                                                                                   ),
+                                                                                 )),
+                                                                           ],
+                                                                         ),
+                                                                       );
+                                                                     }
+                                                                 ));
+                                                               },
+                                                               icon: Icon(
+                                                               Icons.remove_red_eye_sharp,
+                                                               color: Colors.white70,
+                                                             ),),
+                                                             IconButton(onPressed: ()=>{}, icon: Icon(
+                                                               Icons.share,
+                                                               color: Colors.white70,
+                                                             )),
+                                                             IconButton(onPressed: ()=>{}, icon: Icon(
+                                                               Icons.file_download,
+                                                               color: Colors.white70,
+                                                             )),
+                                                           ],
+                                                         ),
+                                                         decoration: new BoxDecoration(
+                                                             color: Colors.black26,
+                                                             borderRadius: BorderRadius.all(
+                                                                 Radius.circular(10))),
+                                                       ),
+                                                     )
+                                                ),
+                                   /*             Positioned(
+                                                  top: 180,
+                                                  left: 20,
+                                                  child:Container(
+                                                    decoration: new BoxDecoration(
+                                                        color: Colors.black26,
+                                                        borderRadius: BorderRadius.all(
+                                                            Radius.circular(12))),
+                                                    child:
+                                                    Row(
+                                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                       children: [
                                                         Icon(
                                                           Icons.remove_red_eye_sharp,
-                                                          color: Colors.black,
+                                                          color: Colors.blue,
+                                                        ),
+                                                        Text("20",
+                                                          style: TextStyle(color: Colors.white),
+                                                        ),
+                                                        SizedBox(
+                                                          width: 80,
                                                         ),
                                                         Icon(
-                                                          Icons.share,
-                                                          color: Colors.black,
+                                                          Icons.stars_rounded,
+                                                          color: Colors.blue,
                                                         ),
-                                                        Icon(
-                                                          Icons.file_download,
-                                                          color: Colors.black,
-                                                        )
+                                                        Text("4/5",
+                                                          style: TextStyle(color: Colors.white),
+                                                        ),
                                                       ],
                                                     ),
-                                                    decoration: new BoxDecoration(
-                                                        color: Colors.white10,
-                                                        borderRadius: BorderRadius.all(
-                                                            Radius.circular(12))),
-                                                  ),
-                                                ),
+                                                  )
+                                                ),*/
                                               ],
                                             )
                                       ),
@@ -220,48 +396,43 @@ class HomePage extends GetView<HomeController> {
                   ],
                 ),
               ),
-              Obx(() {
+              Container(
+                  child: CarouselSlider(
+                    options: CarouselOptions(
+                      height: 400,
+                      scrollDirection: Axis.vertical,
+                      initialPage: 2,
+                      viewportFraction: 1,
+                      aspectRatio: 16 / 9,
+                      enableInfiniteScroll: true,
+                      autoPlay: false,
+                    ),
+                    items: imageSliders,
+                  )),
+
+              Container(
+                  child: CarouselSlider(
+                    options: CarouselOptions(
+                      enlargeCenterPage: true,
+                      height: 490,
+                      scrollDirection: Axis.vertical,
+                      initialPage: 2,
+                      viewportFraction: 1,
+                      aspectRatio: 16 / 9,
+                      enableInfiniteScroll: false,
+                      autoPlay: false,
+                    ),
+                    carouselController: nextCarouselController,
+                    items: imageSliders),
+                  )
+              /*Obx(() {
                 if (_controller.isLoading.value) {
                   return Center(
                     child: CircularProgressIndicator(),
                   );
                 }
-                return Container(
-                    child: CarouselSlider(
-                      options: CarouselOptions(
-                        height: 490,
-                        scrollDirection: Axis.vertical,
-                        initialPage: 2,
-                        viewportFraction: 1,
-                        aspectRatio: 16 / 9,
-                        enableInfiniteScroll: true,
-                        autoPlay: false,
-                      ),
-                      items: imageSliders,
-                    ));
-              }),
-              Obx(() {
-                if (_controller.isLoading.value) {
-                  return Center(
-                    child: CircularProgressIndicator(),
-                  );
-                }
-                return Container(
-                    child: CarouselSlider(
-                      options: CarouselOptions(
-                        enlargeCenterPage: true,
-                        height: 490,
-                        scrollDirection: Axis.vertical,
-                        initialPage: 2,
-                        viewportFraction: 1,
-                        aspectRatio: 16 / 9,
-                        enableInfiniteScroll: false,
-                        autoPlay: false,
-                      ),
-                      carouselController: nextCarouselController,
-                      items: videoSliders,
-                    ));
-              })
+                return;
+              })*/
             ],
           )),
     );
