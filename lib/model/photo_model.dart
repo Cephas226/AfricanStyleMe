@@ -1,6 +1,8 @@
 import 'dart:convert';
 
-List<Photo> todoFromJson(String str) =>
+import 'dart:typed_data';
+
+List<Photo> photoFromJson(String str) =>
     List<Photo>.from(json.decode(str).map((x) => Photo.fromJson(x)));
 
 String todoToJson(List<Photo> data) =>
@@ -9,23 +11,23 @@ String todoToJson(List<Photo> data) =>
 class Photo {
   Photo({
     this.photoId,
-    this.photoCode,
-    this.completed,
+    this.url,
+    this.categories,
   });
 
   int photoId;
-  String photoCode;
-  bool completed;
+  String url;
+  bool categories;
 
   factory Photo.fromJson(Map<String, dynamic> json) => Photo(
     photoId: json["photoId"],
-    photoCode: json["photoCode"],
-    completed: json["completed"],
+    url: json["url"],
+    categories: json["categories"],
   );
 
   Map<String, dynamic> toJson() => {
     "photoId": photoId,
-    "photoCode": photoCode,
-    "completed": completed,
+    "url": url,
+    "categories": categories,
   };
 }

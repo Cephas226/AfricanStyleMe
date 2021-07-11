@@ -5,12 +5,11 @@ class Dataservices {
   static var client = http.Client();
 
   static Future<List<Photo>> getPhoto() async {
-    var response =
-    await client.get('https://jsonplaceholder.typicode.com/todos');
+    var response =await client.get('https://myafricanstyle.herokuapp.com/product');
 
     if (response.statusCode == 200) {
       var data = response.body;
-      return todoFromJson(data);
+      return photoFromJson(data);
     } else {
       return null;
     }

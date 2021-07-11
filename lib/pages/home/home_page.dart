@@ -1,13 +1,13 @@
+import 'dart:convert';
+import 'dart:typed_data';
+
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:get/get.dart';
 import 'package:getx_app/pages/videos/video_page.dart';
-import 'package:getx_app/widget/customicon.dart';
-import 'package:getx_app/widget/details.dart';
-import 'package:getx_app/widget/network_image.dart';
-import 'package:getx_app/widget/photohero.dart';
+import 'package:http/http.dart' as http;
 import 'package:transparent_image/transparent_image.dart';
 
 import '../../main.dart';
@@ -22,28 +22,31 @@ class HomePage extends GetView<HomeController> {
     'https://firebasestorage.googleapis.com/v0/b/yasms-efe24.appspot.com/o/7.jpg?alt=media&token=4d5e8cfb-8bd5-43dd-90f3-6c54e4113b9c',
     'https://firebasestorage.googleapis.com/v0/b/yasms-efe24.appspot.com/o/8.jpg?alt=media&token=adc21471-2539-4a66-aa9d-bd4c769d839d'
   ];
-
   @override
   Widget build(BuildContext context) {
+    Future<List> fetchAds() async {
+      final response =
+          await http.get('https://myafricanstyle.herokuapp.com/product');
+
+      if (response.statusCode == 200) return json.decode(response.body);
+      return [];
+    }
+
     CarouselController nextCarouselController = new CarouselController();
     final HomeController _controller = Get.put(HomeController());
-    final List<Widget> imageSliders = imageList
-        .map((e) => ClipRRect(
+
+    final List<Widget> imageSliders =
+    _controller.photoList.map((e) => ClipRRect(
       child: Stack(
         fit: StackFit.expand,
         children: <Widget>[
-          Obx(() {
-            if (_controller.isLoading.value) {
-              return Center(
-                child: CircularProgressIndicator(),
-              );
-            }
-            return Image.network(e,
-                width: double.infinity, fit: BoxFit.fill);
-          }),
+          FadeInImage.memoryNetwork(
+              placeholder: kTransparentImage,
+              image: e.url,
+              fit: BoxFit.fill),
           Positioned(
             left: 80,
-            top: 400,
+            top: 590,
             child: Container(
               child: Row(
                 children: [
@@ -75,6 +78,28 @@ class HomePage extends GetView<HomeController> {
         ],
       ),
     )).toList();
+
+
+    final List<Widget> videoSliders =
+    _controller.photoList.map((e) => ClipRRect(
+      child: Stack(
+        fit: StackFit.expand,
+        children: <Widget>[
+          Obx(() {
+            if (_controller.isLoading.value) {
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+            return
+              VideosPage();
+            /*Image.network("https://myafricanstyle.herokuapp.com/files/1d732272-3238-4b81-9d7f-a7ffca75cc76",
+                width: double.infinity, fit: BoxFit.fill);*/
+          })
+        ],
+      ),
+    )).toList();
+
 
     return DefaultTabController(
       length: 3,
@@ -118,109 +143,125 @@ class HomePage extends GetView<HomeController> {
                       ),
                     ),
                     Expanded(
-                      child: Scaffold(
-                          body: new Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: new StaggeredGridView.countBuilder(
-                          crossAxisCount: 2,
-                          crossAxisSpacing: 12,
-                          mainAxisSpacing: 12,
-                          itemCount: imageList.length,
-                          itemBuilder: (BuildContext context, int index) =>
-                              GestureDetector(
-                            onTap: () {
-                              Navigator.of(context).push(
-                                  MaterialPageRoute<void>(
-                                      builder: (BuildContext context) {
-                                return ModelPage();
-                              }));
-                            },
-                            child: Container(
-                              decoration: BoxDecoration(
-                                  color: Colors.transparent,
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(12))),
-                              child: ClipRRect(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(12)),
-                                child: FadeInImage.memoryNetwork(
-                                    placeholder: kTransparentImage,
-                                    image:imageList[index],
-                                    //imageList[index],
-                                    fit: BoxFit.cover),
-                              ),
-                            ),
-                          ),
-                          staggeredTileBuilder: (index) {
-                            return new StaggeredTile.count(
-                                1, index.isEven ? 1.2 : 1.8);
-                          },
-                        ),
-                      )),
+                      child: FutureBuilder<List>(
+                          future: fetchAds(),
+                          builder:
+                              (BuildContext context, AsyncSnapshot snapshot) {
+                            if (snapshot.hasData) {
+                              return new Padding(
+                                padding: const EdgeInsets.all(4.0),
+                                child: new StaggeredGridView.count(
+                                  crossAxisCount: 4,
+                                  padding: const EdgeInsets.all(2.0),
+                                  children: snapshot.data.map<Widget>((item) {
+                                    return new Container(
+                                      decoration: BoxDecoration(
+                                          color: Colors.transparent,
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(12))),
+                                      child: ClipRRect(
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(12)),
+                                        child:
+                                            Stack(
+                                              fit: StackFit.passthrough,
+                                              overflow: Overflow.visible,
+                                              children: [
+                                                FadeInImage.memoryNetwork(
+                                                    placeholder: kTransparentImage,
+                                                    image: item["url"],
+                                                    fit: BoxFit.cover),
+                                                Positioned(
+                                                  left: 160,
+                                                  top: 50,
+                                                  child: Container(
+                                                    child: Column(
+                                                      children: [
+                                                        Icon(
+                                                          Icons.remove_red_eye_sharp,
+                                                          color: Colors.black,
+                                                        ),
+                                                        Icon(
+                                                          Icons.share,
+                                                          color: Colors.black,
+                                                        ),
+                                                        Icon(
+                                                          Icons.file_download,
+                                                          color: Colors.black,
+                                                        )
+                                                      ],
+                                                    ),
+                                                    decoration: new BoxDecoration(
+                                                        color: Colors.white10,
+                                                        borderRadius: BorderRadius.all(
+                                                            Radius.circular(12))),
+                                                  ),
+                                                ),
+                                              ],
+                                            )
+                                      ),
+                                    );
+                                  }).toList(),
+                                  staggeredTiles: snapshot.data
+                                      .map<StaggeredTile>(
+                                          (_) => StaggeredTile.fit(2))
+                                      .toList(),
+                                  mainAxisSpacing: 3.0,
+                                  crossAxisSpacing: 4.0, // add some space
+                                ),
+                              );
+                            } else {
+                              return Center(
+                                  child:
+                                      new CircularProgressIndicator()); // If there are no data show this
+                            }
+                          }),
                     )
                   ],
                 ),
               ),
-              SafeArea(
-                child: new Column(
-                  children: <Widget>[
-                    Stack(children: [
-                      /*Row(
-                        children: [
-                          Flexible(
-                              child: Container(
-                            width: double.infinity,
-                            height: 480,
-                            decoration: BoxDecoration(
-                                color: Colors.transparent,
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(12))),
-                            child: ClipRRect(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(1)),
-                              child: FadeInImage.memoryNetwork(
-                                  placeholder: kTransparentImage,
-                                  image:
-                                      "https://firebasestorage.googleapis.com/v0/b/yasms-efe24.appspot.com/o/3.jpg?alt=media&token=d8d4dc46-39a2-472b-a37d-c4dd83ef518b",
-                                  fit: BoxFit.fill),
-                            ),
-                          ))
-                        ],
-                      )*/
-                      Container(
-                          child: CarouselSlider(
-                            options: CarouselOptions(
-                              enlargeCenterPage: true,
-                              height: 490,
-                              scrollDirection: Axis.vertical,
-                              initialPage: 2,
-                              viewportFraction: 1,
-                             aspectRatio: 16 / 9,
-                              enableInfiniteScroll: false,
-                              autoPlay: false,
-                            ),
-                            carouselController: nextCarouselController,
-                            items: imageSliders,
-                          )),
-                    ])
-                  ],
-                ),
-              ),
-              CarouselSlider(
-                options: CarouselOptions(
-                  enlargeCenterPage: false,
-                  height: 1000,
-                  scrollDirection: Axis.vertical,
-                  viewportFraction: 1,
-                  aspectRatio: 16/9,
-                  enableInfiniteScroll: false,
-                  autoPlay: false,
-                ),
-                items: imageList.map((e) => ClipRRect(
-                    child:
-                    VideosPage()
-                )).toList(),
-              )
+              Obx(() {
+                if (_controller.isLoading.value) {
+                  return Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
+                return Container(
+                    child: CarouselSlider(
+                      options: CarouselOptions(
+                        height: 490,
+                        scrollDirection: Axis.vertical,
+                        initialPage: 2,
+                        viewportFraction: 1,
+                        aspectRatio: 16 / 9,
+                        enableInfiniteScroll: true,
+                        autoPlay: false,
+                      ),
+                      items: imageSliders,
+                    ));
+              }),
+              Obx(() {
+                if (_controller.isLoading.value) {
+                  return Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
+                return Container(
+                    child: CarouselSlider(
+                      options: CarouselOptions(
+                        enlargeCenterPage: true,
+                        height: 490,
+                        scrollDirection: Axis.vertical,
+                        initialPage: 2,
+                        viewportFraction: 1,
+                        aspectRatio: 16 / 9,
+                        enableInfiniteScroll: false,
+                        autoPlay: false,
+                      ),
+                      carouselController: nextCarouselController,
+                      items: videoSliders,
+                    ));
+              })
             ],
           )),
     );
@@ -266,4 +307,3 @@ class Mclipper extends CustomClipper<Path> {
     return true;
   }
 }
-
