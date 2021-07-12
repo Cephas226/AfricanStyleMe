@@ -31,7 +31,7 @@ class HomePage extends GetView<HomeController> {
     final HomeController _controller = Get.put(HomeController());
 
     final List<Widget> imageSliders =
-    _controller.photoList.map((e) => ClipRRect(
+    _controller.urList.map((e) => ClipRRect(
       child: Stack(
         children: <Widget>[
           Container(
@@ -39,7 +39,7 @@ class HomePage extends GetView<HomeController> {
             width: double.infinity,
             child: FadeInImage.memoryNetwork(
                 placeholder: kTransparentImage,
-                image: e.url,
+                image: e,
                 fit: BoxFit.fill),
           ),
           Positioned(
@@ -324,7 +324,7 @@ class HomePage extends GetView<HomeController> {
                                                                color: Colors.white70,
                                                              ),),
                                                              IconButton(onPressed: ()=>{}, icon: Icon(
-                                                               Icons.share,
+                                                               Icons.favorite,
                                                                color: Colors.white70,
                                                              )),
                                                              IconButton(onPressed: ()=>{}, icon: Icon(
@@ -340,39 +340,6 @@ class HomePage extends GetView<HomeController> {
                                                        ),
                                                      )
                                                 ),
-                                   /*             Positioned(
-                                                  top: 180,
-                                                  left: 20,
-                                                  child:Container(
-                                                    decoration: new BoxDecoration(
-                                                        color: Colors.black26,
-                                                        borderRadius: BorderRadius.all(
-                                                            Radius.circular(12))),
-                                                    child:
-                                                    Row(
-                                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                      children: [
-                                                        Icon(
-                                                          Icons.remove_red_eye_sharp,
-                                                          color: Colors.blue,
-                                                        ),
-                                                        Text("20",
-                                                          style: TextStyle(color: Colors.white),
-                                                        ),
-                                                        SizedBox(
-                                                          width: 80,
-                                                        ),
-                                                        Icon(
-                                                          Icons.stars_rounded,
-                                                          color: Colors.blue,
-                                                        ),
-                                                        Text("4/5",
-                                                          style: TextStyle(color: Colors.white),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  )
-                                                ),*/
                                               ],
                                             )
                                       ),
@@ -396,43 +363,176 @@ class HomePage extends GetView<HomeController> {
                   ],
                 ),
               ),
-              Container(
-                  child: CarouselSlider(
-                    options: CarouselOptions(
-                      height: 400,
-                      scrollDirection: Axis.vertical,
-                      initialPage: 2,
-                      viewportFraction: 1,
-                      aspectRatio: 16 / 9,
-                      enableInfiniteScroll: true,
-                      autoPlay: false,
-                    ),
-                    items: imageSliders,
-                  )),
-
-              Container(
-                  child: CarouselSlider(
-                    options: CarouselOptions(
-                      enlargeCenterPage: true,
-                      height: 490,
-                      scrollDirection: Axis.vertical,
-                      initialPage: 2,
-                      viewportFraction: 1,
-                      aspectRatio: 16 / 9,
-                      enableInfiniteScroll: false,
-                      autoPlay: false,
-                    ),
-                    carouselController: nextCarouselController,
-                    items: imageSliders),
-                  )
               /*Obx(() {
                 if (_controller.isLoading.value) {
                   return Center(
                     child: CircularProgressIndicator(),
                   );
                 }
-                return;
-              })*/
+                return
+                  Center(
+                    child: FutureBuilder(
+                        future: fetchAds(),
+                        builder: (context, AsyncSnapshot<List<dynamic>> snapshot) {
+                          final data = snapshot.data;
+                          return snapshot.hasData ?
+                          CarouselSlider.builder(
+                             itemCount: snapshot.data.length,
+                            options: CarouselOptions(
+                              height: 800,
+                              scrollDirection: Axis.vertical,
+                              initialPage: 2,
+                              viewportFraction: 1,
+                              aspectRatio: 16 / 9,
+                              enableInfiniteScroll: true,
+                              autoPlay: false,
+                            ),
+                            itemBuilder: (BuildContext context, int itemIndex, int pageViewIndex) =>
+                                ClipRRect(
+                                  child: Stack(
+                                    children: <Widget>[
+                                      Container(
+                                        height: 600,
+                                        width: double.infinity,
+                                        child: FadeInImage.memoryNetwork(
+                                            placeholder: kTransparentImage,
+                                            image: data[itemIndex]["url"],
+                                            fit: BoxFit.fill),
+                                      ),
+                                      Positioned(
+                                        left: 80,
+                                        top: 500,
+                                        child: Container(
+                                          child: Row(
+                                            children: [
+                                              RatingBar.builder(
+                                                initialRating: 3,
+                                                minRating: 1,
+                                                direction: Axis.horizontal,
+                                                allowHalfRating: true,
+                                                itemCount: 5,
+                                                itemPadding: EdgeInsets.symmetric(
+                                                    horizontal: 4.0),
+                                                itemBuilder: (context, _) => Icon(
+                                                  Icons.star,
+                                                  color: Colors.amber,
+                                                ),
+                                                onRatingUpdate: (rating) {
+                                                  print(rating);
+                                                },
+                                              )
+                                            ],
+                                          ),
+                                          decoration: new BoxDecoration(
+                                              color: Colors.white24,
+                                              borderRadius: BorderRadius.all(
+                                                  Radius.circular(12))),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                          )
+                              : const CircularProgressIndicator();
+                        }),
+                  );
+              }),*/
+              Center(
+                child: FutureBuilder(
+                    future: fetchAds(),
+                    builder: (context, AsyncSnapshot<List<dynamic>> snapshot) {
+                      final data = snapshot.data;
+                      return snapshot.hasData ?
+                      CarouselSlider.builder(
+                        itemCount: snapshot.data.length,
+                        options: CarouselOptions(
+                          height: 800,
+                          scrollDirection: Axis.vertical,
+                          initialPage: 2,
+                          viewportFraction: 1,
+                          aspectRatio: 16 / 9,
+                          enableInfiniteScroll: true,
+                          autoPlay: false,
+                        ),
+                        itemBuilder: (BuildContext context, int itemIndex, int pageViewIndex) =>
+                            ClipRRect(
+                              child: Stack(
+                                children: <Widget>[
+                                  Container(
+                                    height: 600,
+                                    width: double.infinity,
+                                    child: FadeInImage.memoryNetwork(
+                                        placeholder: kTransparentImage,
+                                        image: data[itemIndex]["url"],
+                                        fit: BoxFit.fill),
+                                  ),
+                                  Positioned(
+                                    left: 80,
+                                    top: 500,
+                                    child: Container(
+                                      child: Row(
+                                        children: [
+                                          RatingBar.builder(
+                                            initialRating: 3,
+                                            minRating: 1,
+                                            direction: Axis.horizontal,
+                                            allowHalfRating: true,
+                                            itemCount: 5,
+                                            itemPadding: EdgeInsets.symmetric(
+                                                horizontal: 4.0),
+                                            itemBuilder: (context, _) => Icon(
+                                              Icons.star,
+                                              color: Colors.amber,
+                                            ),
+                                            onRatingUpdate: (rating) {
+                                              print(rating);
+                                            },
+                                          )
+                                        ],
+                                      ),
+                                      decoration: new BoxDecoration(
+                                          color: Colors.white24,
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(12))),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                      )
+                          : const CircularProgressIndicator();
+                    }),
+              ),
+              Center(
+                child:
+                FutureBuilder(
+                    future: fetchAds(),
+                    builder: (context, AsyncSnapshot<List<dynamic>> snapshot) {
+                      final data = snapshot.data;
+                      return snapshot.hasData ?
+                      CarouselSlider.builder(
+                        itemCount: snapshot.data.length,
+                        options: CarouselOptions(
+                          height: 800,
+                          scrollDirection: Axis.vertical,
+                          initialPage: 2,
+                          viewportFraction: 1,
+                          aspectRatio: 16 / 9,
+                          enableInfiniteScroll: true,
+                          autoPlay: false,
+                        ),
+                        itemBuilder: (BuildContext context, int itemIndex, int pageViewIndex) =>
+                            ClipRRect(
+                              child: Stack(
+                                children: <Widget>[
+                                  VideosPage(),
+                                ],
+                              ),
+                            ),
+                      )
+                          : const CircularProgressIndicator();
+                    }),
+              ),
             ],
           )),
     );

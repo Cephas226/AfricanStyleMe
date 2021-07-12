@@ -8,11 +8,14 @@ import 'package:http/http.dart' as http;
 class HomeController extends GetxController {
   var isLoading = true.obs;
   var photoList = List<Photo>().obs;
+  var urList = List().obs;
   var current = 0.obs;
   final String title = 'Accueil';
+
   @override
   void onInit() {
     fetchfinalphoto();
+
     super.onInit();
   }
 
@@ -22,7 +25,11 @@ class HomeController extends GetxController {
       var photos = await Dataservices.getPhoto();
       if (photos != null) {
         photoList.value = photos;
+        photoList.forEach((element) {
+          urList.value.add(element.url);
+        });
       }
+      print(urList);
     } finally {
       isLoading(false);
     }
