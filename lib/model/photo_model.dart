@@ -2,14 +2,14 @@ import 'dart:convert';
 
 import 'dart:typed_data';
 
-List<Photo> photoFromJson(String str) =>
-    List<Photo>.from(json.decode(str).map((x) => Photo.fromJson(x)));
+List<Product> photoFromJson(String str) =>
+    List<Product>.from(json.decode(str).map((x) => Product.fromJson(x)));
 
-String todoToJson(List<Photo> data) =>
+String todoToJson(List<Product> data) =>
     json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
-class Photo {
-  Photo({
+class Product {
+  Product({
     this.photoId,
     this.url,
     this.categories,
@@ -19,7 +19,7 @@ class Photo {
   String url;
   bool categories;
 
-  factory Photo.fromJson(Map<String, dynamic> json) => Photo(
+  factory Product.fromJson(Map<String, dynamic> json) => Product(
     photoId: json["photoId"],
     url: json["url"],
     categories: json["categories"],

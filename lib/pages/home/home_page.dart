@@ -7,89 +7,20 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:get/get.dart';
 import 'package:getx_app/pages/videos/video_page.dart';
+import 'package:getx_app/services/backend_service.dart';
 import 'package:getx_app/widget/photohero.dart';
-import 'package:http/http.dart' as http;
 import 'package:transparent_image/transparent_image.dart';
 
 import '../../main.dart';
 import 'home_controller.dart';
 
 class HomePage extends GetView<HomeController> {
+  final HomeController _prodController = Get.put(HomeController());
   List<String> imageList = [];
   @override
   Widget build(BuildContext context) {
-    Future<List> fetchAds() async {
-      final response =
-          await http.get('https://myafricanstyle.herokuapp.com/product');
-
-      if (response.statusCode == 200)
-      return json.decode(response.body);
-      return [];
-    }
-
-    CarouselController nextCarouselController = new CarouselController();
-    final HomeController _controller = Get.put(HomeController());
-
-    final List<Widget> imageSliders =
-    _controller.urList.map((e) => ClipRRect(
-      child: Stack(
-        children: <Widget>[
-          Container(
-            height: 600,
-            width: double.infinity,
-            child: FadeInImage.memoryNetwork(
-                placeholder: kTransparentImage,
-                image: e,
-                fit: BoxFit.fill),
-          ),
-          Positioned(
-            left: 80,
-            top: 500,
-            child: Container(
-              child: Row(
-                children: [
-                  RatingBar.builder(
-                    initialRating: 3,
-                    minRating: 1,
-                    direction: Axis.horizontal,
-                    allowHalfRating: true,
-                    itemCount: 5,
-                    itemPadding: EdgeInsets.symmetric(
-                        horizontal: 4.0),
-                    itemBuilder: (context, _) => Icon(
-                      Icons.star,
-                      color: Colors.amber,
-                    ),
-                    onRatingUpdate: (rating) {
-                      print(rating);
-                    },
-                  )
-                ],
-              ),
-              decoration: new BoxDecoration(
-                  color: Colors.white24,
-                  borderRadius: BorderRadius.all(
-                      Radius.circular(12))),
-            ),
-          ),
-        ],
-      ),
-    )).toList();
-
-
-    final List<Widget> videoSliders =
-    _controller.photoList.map((e) => ClipRRect(
-      child: Stack(
-        fit: StackFit.expand,
-        children: <Widget>[
-          VideosPage()
-        ],
-      ),
-    )).toList();
-
-
     return DefaultTabController(
-      length: 3,
+      length: 3,  
       child: Scaffold(
           appBar: AppBar(
             bottom: TabBar(
@@ -107,7 +38,7 @@ class HomePage extends GetView<HomeController> {
               style: TextStyle(color: Colors.white),
             ),
             elevation: 0,
-            backgroundColor: Colors.indigo,
+            backgroundColor: Color(0xFFF70759),
           ),
           drawer: MainDrawer(),
           body: TabBarView(
@@ -131,7 +62,7 @@ class HomePage extends GetView<HomeController> {
                     ),
                     Expanded(
                       child: FutureBuilder<List>(
-                          future: fetchAds(),
+                          future: Dataservices.fetchProduct(),
                           builder:
                               (BuildContext context, AsyncSnapshot snapshot) {
                             if (snapshot.hasData) {
@@ -167,7 +98,7 @@ class HomePage extends GetView<HomeController> {
                                                               backgroundColor: Colors.red,
                                                             ),
                                                             appBar: AppBar(
-                                                              backgroundColor: Colors.indigo,
+                                                              backgroundColor: Color(0xFFF70759),
                                                               title: const Text('Details'),
                                                             ),
                                                             body:Stack(
@@ -176,7 +107,7 @@ class HomePage extends GetView<HomeController> {
                                                                 Container(
                                                                   padding: const EdgeInsets.all(0.0),
                                                                   height: double.infinity,
-                                                                  color: Colors.indigo,
+                                                                  color: Color(0xFFF70759),
                                                                   child: PhotoHero(
                                                                     photo:  item["url"],
                                                                     width: double.infinity,
@@ -257,10 +188,10 @@ class HomePage extends GetView<HomeController> {
                                                                              // Add your onPressed code here!
                                                                            },
                                                                            child: const Icon(Icons.file_download),
-                                                                           backgroundColor: Colors.red,
+                                                                           backgroundColor: Colors.blueAccent,
                                                                          ),
                                                                          appBar: AppBar(
-                                                                           backgroundColor: Colors.indigo,
+                                                                           backgroundColor: Color(0xFFF70759),
                                                                            title: const Text('Details'),
                                                                          ),
                                                                          body:Stack(
@@ -269,7 +200,7 @@ class HomePage extends GetView<HomeController> {
                                                                              Container(
                                                                                padding: const EdgeInsets.all(0.0),
                                                                                height: double.infinity,
-                                                                               color: Colors.indigo,
+                                                                               color: Color(0xFFF70759),
                                                                                child: PhotoHero(
                                                                                  photo:  item["url"],
                                                                                  width: double.infinity,
@@ -323,10 +254,16 @@ class HomePage extends GetView<HomeController> {
                                                                Icons.remove_red_eye_sharp,
                                                                color: Colors.white70,
                                                              ),),
-                                                             IconButton(onPressed: ()=>{}, icon: Icon(
-                                                               Icons.favorite,
-                                                               color: Colors.white70,
-                                                             )),
+                                                             IconButton(
+                                                                 onPressed: ()=>{
+                                                                  print(_prodController.addProduct(item)
+                                                                  )},
+                                                                 icon: Icon(
+                                                                   Icons.favorite,
+                                                                   color: item["favorite"] == false
+                                                                       ? Colors.white
+                                                                       : Colors.red,
+                                                                 )),
                                                              IconButton(onPressed: ()=>{}, icon: Icon(
                                                                Icons.file_download,
                                                                color: Colors.white70,
@@ -363,83 +300,9 @@ class HomePage extends GetView<HomeController> {
                   ],
                 ),
               ),
-              /*Obx(() {
-                if (_controller.isLoading.value) {
-                  return Center(
-                    child: CircularProgressIndicator(),
-                  );
-                }
-                return
-                  Center(
-                    child: FutureBuilder(
-                        future: fetchAds(),
-                        builder: (context, AsyncSnapshot<List<dynamic>> snapshot) {
-                          final data = snapshot.data;
-                          return snapshot.hasData ?
-                          CarouselSlider.builder(
-                             itemCount: snapshot.data.length,
-                            options: CarouselOptions(
-                              height: 800,
-                              scrollDirection: Axis.vertical,
-                              initialPage: 2,
-                              viewportFraction: 1,
-                              aspectRatio: 16 / 9,
-                              enableInfiniteScroll: true,
-                              autoPlay: false,
-                            ),
-                            itemBuilder: (BuildContext context, int itemIndex, int pageViewIndex) =>
-                                ClipRRect(
-                                  child: Stack(
-                                    children: <Widget>[
-                                      Container(
-                                        height: 600,
-                                        width: double.infinity,
-                                        child: FadeInImage.memoryNetwork(
-                                            placeholder: kTransparentImage,
-                                            image: data[itemIndex]["url"],
-                                            fit: BoxFit.fill),
-                                      ),
-                                      Positioned(
-                                        left: 80,
-                                        top: 500,
-                                        child: Container(
-                                          child: Row(
-                                            children: [
-                                              RatingBar.builder(
-                                                initialRating: 3,
-                                                minRating: 1,
-                                                direction: Axis.horizontal,
-                                                allowHalfRating: true,
-                                                itemCount: 5,
-                                                itemPadding: EdgeInsets.symmetric(
-                                                    horizontal: 4.0),
-                                                itemBuilder: (context, _) => Icon(
-                                                  Icons.star,
-                                                  color: Colors.amber,
-                                                ),
-                                                onRatingUpdate: (rating) {
-                                                  print(rating);
-                                                },
-                                              )
-                                            ],
-                                          ),
-                                          decoration: new BoxDecoration(
-                                              color: Colors.white24,
-                                              borderRadius: BorderRadius.all(
-                                                  Radius.circular(12))),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                          )
-                              : const CircularProgressIndicator();
-                        }),
-                  );
-              }),*/
               Center(
                 child: FutureBuilder(
-                    future: fetchAds(),
+                    future: Dataservices.fetchProduct(),
                     builder: (context, AsyncSnapshot<List<dynamic>> snapshot) {
                       final data = snapshot.data;
                       return snapshot.hasData ?
@@ -506,7 +369,7 @@ class HomePage extends GetView<HomeController> {
               Center(
                 child:
                 FutureBuilder(
-                    future: fetchAds(),
+                    future: Dataservices.fetchProduct(),
                     builder: (context, AsyncSnapshot<List<dynamic>> snapshot) {
                       final data = snapshot.data;
                       return snapshot.hasData ?

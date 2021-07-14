@@ -12,7 +12,8 @@ class DashboardPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetBuilder<DashboardController>(
       builder: (controller) {
-        return Scaffold(
+        return
+          Scaffold(
           body: SafeArea(
             child: IndexedStack(
               index: controller.tabIndex,
@@ -48,10 +49,6 @@ class DashboardPage extends StatelessWidget {
                 icon: CupertinoIcons.heart,
                 label: 'Favoris',
               ),
-              /*_bottomNavigationBarItem(
-                icon: CupertinoIcons.person,
-                label: 'Account',
-              ),*/
             ],
           ),
         );

@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:getx_app/pages/categories/categories_controller.dart';
+import 'package:getx_app/services/backend_service.dart';
 import 'package:getx_app/widget/orientation/portrait_player_widget.dart';
 import 'package:transparent_image/transparent_image.dart';
 
 class CategoriesPage extends GetView<CategoriesController> {
+
+  final CategoriesController _catController = Get.put(CategoriesController());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,7 +36,7 @@ class CategoriesPage extends GetView<CategoriesController> {
                     body:Center(
                       child:
                       FutureBuilder(
-                          future: fetchAds(),
+                          future: Dataservices.fetchProduct(),
                           builder: (context, AsyncSnapshot<List<dynamic>> snapshot) {
                             final data = snapshot.data;
                             return snapshot.hasData ?
@@ -46,13 +49,13 @@ class CategoriesPage extends GetView<CategoriesController> {
                                 mainAxisSpacing: 2,
                               ),
                               itemBuilder: (context,index,) {
-                                return GestureDetector(
+                                return
+                                GestureDetector(
                                   onTap:(){
                                     // Navigator.of(context).pushNamed(RouteName.GridViewCustom);
                                   },
                                   child:ClipRect(
                                     child:
-                                    data[index]["categorie"]=="Homme"?
                                     Container(
                                       width: 200,
                                       height: double.infinity,
@@ -60,7 +63,7 @@ class CategoriesPage extends GetView<CategoriesController> {
                                           placeholder: kTransparentImage,
                                           image: data[index]["url"],
                                           fit: BoxFit.fill),
-                                    ):Text("Aucune image"),
+                                    ),
                                   ),
                                 );
                               },
@@ -128,7 +131,7 @@ class CategoriesPage extends GetView<CategoriesController> {
                             body:Center(
                               child:
                               FutureBuilder(
-                                  future: fetchAds(),
+                                  future: Dataservices.fetchProduct(),
                                   builder: (context, AsyncSnapshot<List<dynamic>> snapshot) {
                                     final data = snapshot.data;
                                     return snapshot.hasData
@@ -147,7 +150,6 @@ class CategoriesPage extends GetView<CategoriesController> {
                                           },
                                           child:ClipRect(
                                             child:
-                                            data[index]["categorie"]=="Femme"?
                                             Container(
                                               width: 200,
                                               height: double.infinity,
@@ -155,7 +157,7 @@ class CategoriesPage extends GetView<CategoriesController> {
                                                   placeholder: kTransparentImage,
                                                   image: data[index]["url"],
                                                   fit: BoxFit.fill),
-                                            ):Text("Aucune image"),
+                                            ),
                                           ),
                                         );
                                       },
@@ -222,7 +224,7 @@ class CategoriesPage extends GetView<CategoriesController> {
                             body:Center(
                               child:
                               FutureBuilder(
-                                  future: fetchAds(),
+                                  future: Dataservices.fetchProduct(),
                                   builder: (context, AsyncSnapshot<List<dynamic>> snapshot) {
                                     final data = snapshot.data;
                                     return snapshot.hasData ?
@@ -241,7 +243,6 @@ class CategoriesPage extends GetView<CategoriesController> {
                                           },
                                           child:ClipRect(
                                             child:
-                                            data[index]["categorie"]=="Couple" ?
                                             Container(
                                               width: 200,
                                               height: double.infinity,
@@ -249,7 +250,7 @@ class CategoriesPage extends GetView<CategoriesController> {
                                                   placeholder: kTransparentImage,
                                                   image: data[index]["url"],
                                                   fit: BoxFit.fill),
-                                            ):Text("Aucun image"),
+                                            ),
                                           ),
                                         );
                                       },
@@ -316,7 +317,7 @@ class CategoriesPage extends GetView<CategoriesController> {
                             body:Center(
                               child:
                               FutureBuilder(
-                                  future: fetchAds(),
+                                  future: Dataservices.fetchProduct(),
                                   builder: (context, AsyncSnapshot<List<dynamic>> snapshot) {
                                     final data = snapshot.data;
                                     return snapshot.hasData ?
@@ -335,7 +336,6 @@ class CategoriesPage extends GetView<CategoriesController> {
                                           },
                                           child:ClipRect(
                                             child:
-                                            data[index]["categorie"]=="Enfant"?
                                             Container(
                                               width: 200,
                                               height: double.infinity,
@@ -343,7 +343,7 @@ class CategoriesPage extends GetView<CategoriesController> {
                                                   placeholder: kTransparentImage,
                                                   image: data[index]["url"],
                                                   fit: BoxFit.fill),
-                                            ):Text("Aucun image"),
+                                            ),
                                           ),
                                         );
                                       },

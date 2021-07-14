@@ -3,35 +3,31 @@ import 'dart:convert';
 import 'package:get/get.dart';
 import 'package:getx_app/model/photo_model.dart';
 import 'package:getx_app/services/backend_service.dart';
-import 'package:http/http.dart' as http;
+import 'package:hive/hive.dart';
 
 class HomeController extends GetxController {
   var isLoading = true.obs;
-  var photoList = List<Photo>().obs;
+  var photoList = List<Product>().obs;
   var urList = List().obs;
+  List allProduct = [];
   var current = 0.obs;
   final String title = 'Accueil';
 
   @override
-  void onInit() {
-    fetchfinalphoto();
-
+  void onInit() async {
     super.onInit();
   }
+  @override
+  void dispose() {
+    Hive.close();
+    super.dispose();
+  }
+   addProduct( prod) async {
+     var producBox = await Hive.openBox('product');
+     producBox.add(prod);
+     print(producBox.get(0));
+  }
+  void removeItem(int id) {
 
-  void fetchfinalphoto() async {
-    isLoading(true);
-    try {
-      var photos = await Dataservices.getPhoto();
-      if (photos != null) {
-        photoList.value = photos;
-        photoList.forEach((element) {
-          urList.value.add(element.url);
-        });
-      }
-      print(urList);
-    } finally {
-      isLoading(false);
-    }
   }
 }

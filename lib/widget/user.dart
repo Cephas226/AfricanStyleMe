@@ -1,6 +1,5 @@
 import "package:flutter/material.dart";
 import 'package:getx_app/model/user_modelx.dart';
-import 'package:getx_app/pages/favoris/user_detail.dart';
 import 'package:getx_app/widget/details.dart';
 import 'package:getx_app/widget/photohero.dart';
 
@@ -12,7 +11,7 @@ class User extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () =>  Navigator.push(context, MaterialPageRoute(builder: (context) => UserDetail(_user))),
+      onTap: () => {},
       child: Container(
         padding: EdgeInsets.all(10),
         child: Row(
