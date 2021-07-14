@@ -20,7 +20,7 @@ class HomePage extends GetView<HomeController> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 3,  
+      length: 3,
       child: Scaffold(
           appBar: AppBar(
             bottom: TabBar(
@@ -78,207 +78,207 @@ class HomePage extends GetView<HomeController> {
                                           borderRadius: BorderRadius.all(
                                               Radius.circular(12))),
                                       child: ClipRRect(
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(12)),
-                                        child:
-                                            Stack(
-                                              fit: StackFit.passthrough,
-                                              overflow: Overflow.visible,
-                                              children: [
-                                                GestureDetector(
-                                                  onTap: () {
-                                                    Navigator.of(context).push(MaterialPageRoute<void>(
-                                                        builder: (BuildContext context) {
-                                                          return Scaffold(
-                                                            floatingActionButton: FloatingActionButton(
-                                                              onPressed: () {
-                                                                // Add your onPressed code here!
-                                                              },
-                                                              child: const Icon(Icons.file_download),
-                                                              backgroundColor: Colors.red,
-                                                            ),
-                                                            appBar: AppBar(
-                                                              backgroundColor: Color(0xFFF70759),
-                                                              title: const Text('Details'),
-                                                            ),
-                                                            body:Stack(
-                                                              fit:StackFit.passthrough,
-                                                              children: [
-                                                                Container(
-                                                                  padding: const EdgeInsets.all(0.0),
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(12)),
+                                          child:
+                                          Stack(
+                                            fit: StackFit.passthrough,
+                                            overflow: Overflow.visible,
+                                            children: [
+                                              GestureDetector(
+                                                onTap: () {
+                                                  Navigator.of(context).push(MaterialPageRoute<void>(
+                                                      builder: (BuildContext context) {
+                                                        return Scaffold(
+                                                          floatingActionButton: FloatingActionButton(
+                                                            onPressed: () {
+                                                              // Add your onPressed code here!
+                                                            },
+                                                            child: const Icon(Icons.file_download),
+                                                            backgroundColor: Colors.red,
+                                                          ),
+                                                          appBar: AppBar(
+                                                            backgroundColor: Color(0xFFF70759),
+                                                            title: const Text('Details'),
+                                                          ),
+                                                          body:Stack(
+                                                            fit:StackFit.passthrough,
+                                                            children: [
+                                                              Container(
+                                                                padding: const EdgeInsets.all(0.0),
+                                                                height: double.infinity,
+                                                                color: Color(0xFFF70759),
+                                                                child: PhotoHero(
+                                                                  photo:  item["url"],
+                                                                  width: double.infinity,
                                                                   height: double.infinity,
-                                                                  color: Color(0xFFF70759),
-                                                                  child: PhotoHero(
-                                                                    photo:  item["url"],
-                                                                    width: double.infinity,
-                                                                    height: double.infinity,
-                                                                    onTap: () {
-                                                                      Navigator.of(context).pop();
-                                                                    },
-                                                                  ),
+                                                                  onTap: () {
+                                                                    Navigator.of(context).pop();
+                                                                  },
                                                                 ),
-                                                                Positioned(
-                                                                    bottom: 150,
-                                                                    left: 10,
-                                                                    child: Container(
-                                                                      width: 200,
-                                                                      decoration: new BoxDecoration(
-                                                                          color: Colors.white,
-                                                                          borderRadius: BorderRadius.all(
-                                                                              Radius.circular(12))),
-                                                                      child:
-                                                                      Row(
-                                                                        mainAxisAlignment: MainAxisAlignment.center,
+                                                              ),
+                                                              Positioned(
+                                                                  bottom: 150,
+                                                                  left: 10,
+                                                                  child: Container(
+                                                                    width: 200,
+                                                                    decoration: new BoxDecoration(
+                                                                        color: Colors.white,
+                                                                        borderRadius: BorderRadius.all(
+                                                                            Radius.circular(12))),
+                                                                    child:
+                                                                    Row(
+                                                                      mainAxisAlignment: MainAxisAlignment.center,
 
-                                                                        children: [
-                                                                          Icon(
-                                                                            Icons.remove_red_eye_sharp,
-                                                                            color: Colors.blue,
-                                                                          ),
-                                                                          Text("20",
-                                                                            style: TextStyle(color: Colors.black),
-                                                                          ),
-                                                                          SizedBox(
-                                                                            width: 50,
-                                                                          ),
-                                                                          Icon(
-                                                                            Icons.stars_rounded,
-                                                                            color: Colors.blue,
-                                                                          ),
-                                                                          Text("4/5",
-                                                                            style: TextStyle(color: Colors.black),
-                                                                          ),
-                                                                        ],
-                                                                      ),
-                                                                    )),
-                                                              ],
-                                                            ),
-                                                          );
-                                                        }
-                                                    ));
-                                                  },
-                                                  child: Container(
-                                                    padding: EdgeInsets.all(12.0),
-                                                    decoration: BoxDecoration(
-                                                      color: Theme.of(context).buttonColor,
-                                                      borderRadius: BorderRadius.circular(8.0),
-                                                    ),
-                                                    child:
-                                                    FadeInImage.memoryNetwork(
-                                                        placeholder: kTransparentImage,
-                                                        image: item["url"],
-                                                        fit: BoxFit.cover),
+                                                                      children: [
+                                                                        Icon(
+                                                                          Icons.remove_red_eye_sharp,
+                                                                          color: Colors.blue,
+                                                                        ),
+                                                                        Text("20",
+                                                                          style: TextStyle(color: Colors.black),
+                                                                        ),
+                                                                        SizedBox(
+                                                                          width: 50,
+                                                                        ),
+                                                                        Icon(
+                                                                          Icons.stars_rounded,
+                                                                          color: Colors.blue,
+                                                                        ),
+                                                                        Text("4/5",
+                                                                          style: TextStyle(color: Colors.black),
+                                                                        ),
+                                                                      ],
+                                                                    ),
+                                                                  )),
+                                                            ],
+                                                          ),
+                                                        );
+                                                      }
+                                                  ));
+                                                },
+                                                child: Container(
+                                                  padding: EdgeInsets.all(12.0),
+                                                  decoration: BoxDecoration(
+                                                    color: Theme.of(context).buttonColor,
+                                                    borderRadius: BorderRadius.circular(8.0),
                                                   ),
+                                                  child:
+                                                  FadeInImage.memoryNetwork(
+                                                      placeholder: kTransparentImage,
+                                                      image: item["url"],
+                                                      fit: BoxFit.cover),
                                                 ),
-                                                Positioned(
+                                              ),
+                                              Positioned(
                                                   left: 130,
                                                   top: 0,
                                                   child:
-                                                     Center(
-                                                       child:   Container(
-                                                         child: Column(
-                                                           children: [
-                                                             IconButton(
-                                                               onPressed: (){
-                                                                 Navigator.of(context).push(MaterialPageRoute<void>(
-                                                                     builder: (BuildContext context) {
-                                                                       return Scaffold(
-                                                                         floatingActionButton: FloatingActionButton(
-                                                                           onPressed: () {
-                                                                             // Add your onPressed code here!
-                                                                           },
-                                                                           child: const Icon(Icons.file_download),
-                                                                           backgroundColor: Colors.blueAccent,
-                                                                         ),
-                                                                         appBar: AppBar(
-                                                                           backgroundColor: Color(0xFFF70759),
-                                                                           title: const Text('Details'),
-                                                                         ),
-                                                                         body:Stack(
-                                                                           fit:StackFit.passthrough,
-                                                                           children: [
-                                                                             Container(
-                                                                               padding: const EdgeInsets.all(0.0),
-                                                                               height: double.infinity,
-                                                                               color: Color(0xFFF70759),
-                                                                               child: PhotoHero(
-                                                                                 photo:  item["url"],
-                                                                                 width: double.infinity,
-                                                                                 height: double.infinity,
-                                                                                 onTap: () {
-                                                                                   Navigator.of(context).pop();
-                                                                                 },
-                                                                               ),
-                                                                             ),
-                                                                             Positioned(
-                                                                                 bottom: 150,
-                                                                                 left: 10,
-                                                                                 child: Container(
-                                                                                   width: 200,
-                                                                                   decoration: new BoxDecoration(
-                                                                                       color: Colors.white,
-                                                                                       borderRadius: BorderRadius.all(
-                                                                                           Radius.circular(12))),
-                                                                                   child:
-                                                                                   Row(
-                                                                                     mainAxisAlignment: MainAxisAlignment.center,
+                                                  Center(
+                                                    child:   Container(
+                                                      child: Column(
+                                                        children: [
+                                                          IconButton(
+                                                            onPressed: (){
+                                                              Navigator.of(context).push(MaterialPageRoute<void>(
+                                                                  builder: (BuildContext context) {
+                                                                    return Scaffold(
+                                                                      floatingActionButton: FloatingActionButton(
+                                                                        onPressed: () {
+                                                                          // Add your onPressed code here!
+                                                                        },
+                                                                        child: const Icon(Icons.file_download),
+                                                                        backgroundColor: Colors.blueAccent,
+                                                                      ),
+                                                                      appBar: AppBar(
+                                                                        backgroundColor: Color(0xFFF70759),
+                                                                        title: const Text('Details'),
+                                                                      ),
+                                                                      body:Stack(
+                                                                        fit:StackFit.passthrough,
+                                                                        children: [
+                                                                          Container(
+                                                                            padding: const EdgeInsets.all(0.0),
+                                                                            height: double.infinity,
+                                                                            color: Color(0xFFF70759),
+                                                                            child: PhotoHero(
+                                                                              photo:  item["url"],
+                                                                              width: double.infinity,
+                                                                              height: double.infinity,
+                                                                              onTap: () {
+                                                                                Navigator.of(context).pop();
+                                                                              },
+                                                                            ),
+                                                                          ),
+                                                                          Positioned(
+                                                                              bottom: 150,
+                                                                              left: 10,
+                                                                              child: Container(
+                                                                                width: 200,
+                                                                                decoration: new BoxDecoration(
+                                                                                    color: Colors.white,
+                                                                                    borderRadius: BorderRadius.all(
+                                                                                        Radius.circular(12))),
+                                                                                child:
+                                                                                Row(
+                                                                                  mainAxisAlignment: MainAxisAlignment.center,
 
-                                                                                     children: [
-                                                                                       Icon(
-                                                                                         Icons.remove_red_eye_sharp,
-                                                                                         color: Colors.blue,
-                                                                                       ),
-                                                                                       Text("20",
-                                                                                         style: TextStyle(color: Colors.black),
-                                                                                       ),
-                                                                                       SizedBox(
-                                                                                         width: 50,
-                                                                                       ),
-                                                                                       Icon(
-                                                                                         Icons.stars_rounded,
-                                                                                         color: Colors.blue,
-                                                                                       ),
-                                                                                       Text("4/5",
-                                                                                         style: TextStyle(color: Colors.black),
-                                                                                       ),
-                                                                                     ],
-                                                                                   ),
-                                                                                 )),
-                                                                           ],
-                                                                         ),
-                                                                       );
-                                                                     }
-                                                                 ));
-                                                               },
-                                                               icon: Icon(
-                                                               Icons.remove_red_eye_sharp,
-                                                               color: Colors.white70,
-                                                             ),),
-                                                             IconButton(
-                                                                 onPressed: ()=>{
-                                                                  print(_prodController.addProduct(item)
-                                                                  )},
-                                                                 icon: Icon(
-                                                                   Icons.favorite,
-                                                                   color: item["favorite"] == false
-                                                                       ? Colors.white
-                                                                       : Colors.red,
-                                                                 )),
-                                                             IconButton(onPressed: ()=>{}, icon: Icon(
-                                                               Icons.file_download,
-                                                               color: Colors.white70,
-                                                             )),
-                                                           ],
-                                                         ),
-                                                         decoration: new BoxDecoration(
-                                                             color: Colors.black26,
-                                                             borderRadius: BorderRadius.all(
-                                                                 Radius.circular(10))),
-                                                       ),
-                                                     )
-                                                ),
-                                              ],
-                                            )
+                                                                                  children: [
+                                                                                    Icon(
+                                                                                      Icons.remove_red_eye_sharp,
+                                                                                      color: Colors.blue,
+                                                                                    ),
+                                                                                    Text("20",
+                                                                                      style: TextStyle(color: Colors.black),
+                                                                                    ),
+                                                                                    SizedBox(
+                                                                                      width: 50,
+                                                                                    ),
+                                                                                    Icon(
+                                                                                      Icons.stars_rounded,
+                                                                                      color: Colors.blue,
+                                                                                    ),
+                                                                                    Text("4/5",
+                                                                                      style: TextStyle(color: Colors.black),
+                                                                                    ),
+                                                                                  ],
+                                                                                ),
+                                                                              )),
+                                                                        ],
+                                                                      ),
+                                                                    );
+                                                                  }
+                                                              ));
+                                                            },
+                                                            icon: Icon(
+                                                              Icons.remove_red_eye_sharp,
+                                                              color: Colors.white70,
+                                                            ),),
+                                                          IconButton(
+                                                              onPressed: ()=>{
+                                                                print(_prodController.addProduct(item)
+                                                                )},
+                                                              icon: Icon(
+                                                                Icons.favorite,
+                                                                color: item["favorite"] == false
+                                                                    ? Colors.white
+                                                                    : Colors.red,
+                                                              )),
+                                                          IconButton(onPressed: ()=>{}, icon: Icon(
+                                                            Icons.file_download,
+                                                            color: Colors.white70,
+                                                          )),
+                                                        ],
+                                                      ),
+                                                      decoration: new BoxDecoration(
+                                                          color: Colors.black26,
+                                                          borderRadius: BorderRadius.all(
+                                                              Radius.circular(10))),
+                                                    ),
+                                                  )
+                                              ),
+                                            ],
+                                          )
                                       ),
                                     );
                                   }).toList(),
@@ -293,7 +293,7 @@ class HomePage extends GetView<HomeController> {
                             } else {
                               return Center(
                                   child:
-                                      new CircularProgressIndicator()); // If there are no data show this
+                                  new CircularProgressIndicator()); // If there are no data show this
                             }
                           }),
                     )

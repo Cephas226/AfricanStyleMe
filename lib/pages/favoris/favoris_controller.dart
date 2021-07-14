@@ -13,6 +13,7 @@ class FavorisController extends GetxController {
   @override
   void onInit() async{
     fetchfinalphoto();
+    getFavProduct();
     allProduct = await getFavProduct();
     super.onInit();
   }
@@ -38,7 +39,7 @@ class FavorisController extends GetxController {
       tmp.categories = prodMap['categories'];
       tmp.url = prodMap['url'];
       productList.add(tmp);
-      print(prodMap);
+      print("cooly");
     }
     return productList;
   }

@@ -22,10 +22,10 @@ class HomeController extends GetxController {
     Hive.close();
     super.dispose();
   }
-   addProduct( prod) async {
-     var producBox = await Hive.openBox('product');
-     producBox.add(prod);
-     print(producBox.get(0));
+  addProduct( prod) async {
+    var producBox = await Hive.openBox('product');
+    producBox.add(prod);
+    print(producBox.get(0));
   }
   void removeItem(int id) {
 

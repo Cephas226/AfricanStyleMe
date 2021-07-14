@@ -115,12 +115,37 @@ class FavorisPage extends GetView<FavorisController> {
 
 Widget _buildListView() {
 
-  return ListView.builder(
+  return
+
+    FutureBuilder(
+        future: _favController.getFavProduct(),
+        builder: (context, AsyncSnapshot<List<dynamic>> snapshot) {
+          final data = snapshot.data;
+          return snapshot.hasData ?
+          ListView.builder(
+            itemCount: snapshot.data.length,
+            itemBuilder: (context, index) {
+              return GestureDetector(
+                onTap: ()=>{},
+                child:  Container(
+                  height: 600,
+                  width: double.infinity,
+                  child: FadeInImage.memoryNetwork(
+                      placeholder: kTransparentImage,
+                      image: data[index].url,
+                      fit: BoxFit.fill),
+                ),
+              );
+            },
+          )
+              : const CircularProgressIndicator();
+        });
+/*    ListView.builder(
     itemCount: _favController.allProduct.length,
     itemBuilder: (context, index) {
       final prod = _favController.allProduct[index];
       print(prod.toJson());
-      return prod != null?GestureDetector(
+      return GestureDetector(
         onTap: ()=>{},
         child:  Container(
           height: 600,
@@ -130,7 +155,7 @@ Widget _buildListView() {
               image: prod.url,
               fit: BoxFit.fill),
         ),
-      ):CircularProgressIndicator();
+      );
     },
-  );
+  );*/
 }
