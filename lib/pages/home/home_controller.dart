@@ -16,18 +16,34 @@ class HomeController extends GetxController {
   @override
   void onInit() async {
     super.onInit();
+
   }
   @override
   void dispose() {
     Hive.close();
     super.dispose();
   }
-  addProduct( prod) async {
+  addProduct(prod) async {
     var producBox = await Hive.openBox('product');
     producBox.add(prod);
     print(producBox.get(0));
   }
-  void removeItem(int id) {
+/*  Future addProductx(int photoId, String categorie, String url) async {
+    final product = Product()
+      ..photoId = photoId
+      ..categorie = categorie
+      ..url = url;
+
+    final box = Product.getProd();
+    box.add(product);
+    //box.put('mykey', transaction);
+
+    // final mybox = Boxes.getTransactions();
+    // final myTransaction = mybox.get('key');
+    // mybox.values;
+    // mybox.keys;
+  }*/
+  void removeProduct(int id) async{
 
   }
 }

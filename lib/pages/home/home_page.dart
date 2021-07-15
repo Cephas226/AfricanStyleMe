@@ -256,8 +256,7 @@ class HomePage extends GetView<HomeController> {
                                                             ),),
                                                           IconButton(
                                                               onPressed: ()=>{
-                                                                print(_prodController.addProduct(item)
-                                                                )},
+                                                                _prodController.addProduct(item)},
                                                               icon: Icon(
                                                                 Icons.favorite,
                                                                 color: item["favorite"] == false

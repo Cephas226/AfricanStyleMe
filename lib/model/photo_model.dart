@@ -2,6 +2,8 @@ import 'dart:convert';
 
 import 'dart:typed_data';
 
+import 'package:hive/hive.dart';
+
 List<Product> photoFromJson(String str) =>
     List<Product>.from(json.decode(str).map((x) => Product.fromJson(x)));
 
@@ -12,22 +14,26 @@ class Product {
   Product({
     this.photoId,
     this.url,
-    this.categories,
+    this.categorie,
+    this.favorite,
   });
 
   int photoId;
   String url;
-  bool categories;
+  String categorie;
+  bool favorite;
 
   factory Product.fromJson(Map<String, dynamic> json) => Product(
     photoId: json["photoId"],
     url: json["url"],
-    categories: json["categories"],
+    categorie: json["categorie"],
+    favorite: json["favorite"],
   );
 
   Map<String, dynamic> toJson() => {
     "photoId": photoId,
     "url": url,
-    "categories": categories,
+    "categorie": categorie,
+    "favorite":favorite
   };
 }
