@@ -19,23 +19,10 @@ class FavorisController extends GetxController {
     await Hive.openBox("product");
    // await Hive.openBox('product');
     super.onInit();
-    fetchfinalphoto();
     getFavProduct();
   }
-
-  void fetchfinalphoto() async {
-   /* isLoading(true);
-    try {
-      var photos = await Dataservices.getPhoto();
-      if (photos != null) {
-        photoList.value = photos;
-      }
-    } finally {
-      isLoading(false);
-    }*/
-  }
   Future<List<Product>> getFavProduct() async {
-     box= await Hive.openBox(productBox);
+    box= await Hive.openBox(productBox);
     List<Product> productList = [];
     for (int i = 0; i < box.length; i++) {
       var prodMap = box.getAt(i).map((k, e) => MapEntry(k.toString(), e));

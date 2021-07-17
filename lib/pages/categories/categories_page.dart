@@ -9,6 +9,8 @@ import 'package:transparent_image/transparent_image.dart';
 class CategoriesPage extends GetView<CategoriesController> {
   List homme;
   List femme;
+  List couple;
+  List enfant;
   final CategoriesController _catController = Get.put(CategoriesController());
   @override
   Widget build(BuildContext context) {
@@ -34,6 +36,7 @@ class CategoriesPage extends GetView<CategoriesController> {
                     Scaffold(
                     appBar: AppBar(
                       title: const Text('Photo'),
+                      backgroundColor: Color(0xFFF70759),
                     ),
                     body:Center(
                       child:
@@ -44,9 +47,10 @@ class CategoriesPage extends GetView<CategoriesController> {
 
                             if(data != null){
                               homme = data.where((o) => o['categorie'] == "Homme").toList();
-                              femme =data.where((o) => o['categorie'] == "Femme").toList();
+                              couple =data.where((o) => o['categorie'] == "Couple").toList();
+                              enfant =data.where((o) => o['categorie'] == "Enfant").toList();
                             }
-                            return snapshot.hasData ?
+                            return homme != null ?
                             GridView.builder(
                               itemCount:homme.length,
                               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -75,7 +79,11 @@ class CategoriesPage extends GetView<CategoriesController> {
                                 );
                               },
                             )
-                                : const CircularProgressIndicator();
+                                : Center (
+                              child: Text(
+                                  "Aucune image"
+                              ),
+                            );
                           }),
                     )
                   );
@@ -92,7 +100,7 @@ class CategoriesPage extends GetView<CategoriesController> {
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(20),
                       image: DecorationImage(
-                          image: NetworkImage("https://firebasestorage.googleapis.com/v0/b/yasms-efe24.appspot.com/o/2.jpg?alt=media&token=eda824fd-3729-44c9-95b2-588b6967593a"),
+                          image: AssetImage("assets/a.jpg"),
                           fit: BoxFit.cover)),
                   child: Transform.translate(
                     offset: Offset(50, -50),
@@ -134,6 +142,7 @@ class CategoriesPage extends GetView<CategoriesController> {
                         Scaffold(
                             appBar: AppBar(
                               title: const Text('Photo'),
+                              backgroundColor: Color(0xFFF70759),
                             ),
                             body:Center(
                               child:
@@ -141,7 +150,11 @@ class CategoriesPage extends GetView<CategoriesController> {
                                   future: Dataservices.fetchProduct(),
                                   builder: (context, AsyncSnapshot<List<dynamic>> snapshot) {
                                     final data = snapshot.data;
-                                    return snapshot.hasData
+                                    if (data!=null){
+                                      femme =data.where((o) => o['categorie'] == "Femme").toList();
+                                      print(couple);
+                                    }
+                                    return femme!=null
                                         ? GridView.builder(
                                       itemCount:femme.length,
                                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -169,7 +182,11 @@ class CategoriesPage extends GetView<CategoriesController> {
                                         );
                                       },
                                     )
-                                        : const CircularProgressIndicator();
+                                        : Center (
+                                      child: Text(
+                                          "Aucune image"
+                                      ),
+                                    );
                                   }),
                             )
                         );
@@ -187,7 +204,7 @@ class CategoriesPage extends GetView<CategoriesController> {
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(20),
                           image: DecorationImage(
-                              image: NetworkImage("https://firebasestorage.googleapis.com/v0/b/yasms-efe24.appspot.com/o/10.jpg?alt=media&token=8e4d7611-1707-4fe2-ab72-c0feefe37477"),
+                              image: AssetImage("assets/b.jpg"),
                               fit: BoxFit.cover)),
                       child: Transform.translate(
                         offset: Offset(50, -50),
@@ -227,6 +244,7 @@ class CategoriesPage extends GetView<CategoriesController> {
                         Scaffold(
                             appBar: AppBar(
                               title: const Text('Photo'),
+                              backgroundColor: Color(0xFFF70759),
                             ),
                             body:Center(
                               child:
@@ -234,9 +252,13 @@ class CategoriesPage extends GetView<CategoriesController> {
                                   future: Dataservices.fetchProduct(),
                                   builder: (context, AsyncSnapshot<List<dynamic>> snapshot) {
                                     final data = snapshot.data;
-                                    return snapshot.hasData ?
+                                    if (data!=null){
+                                      couple =data.where((o) => o['categorie'] == "Couple").toList();
+                                      print(couple);
+                                    }
+                                    return couple != null?
                                     GridView.builder(
-                                      itemCount:data.length,
+                                      itemCount:couple.length,
                                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                                         crossAxisCount: MediaQuery.of(context).orientation ==
                                             Orientation.landscape ? 3: 2,
@@ -255,14 +277,18 @@ class CategoriesPage extends GetView<CategoriesController> {
                                               height: double.infinity,
                                               child: FadeInImage.memoryNetwork(
                                                   placeholder: kTransparentImage,
-                                                  image: data[index]["url"],
+                                                  image: couple[index]["url"],
                                                   fit: BoxFit.fill),
                                             ),
                                           ),
                                         );
                                       },
                                     )
-                                        : const CircularProgressIndicator();
+                                        :Center (
+                                      child: Text(
+                                          "Aucune image"
+                                      ),
+                                    );
                                   }),
                             )
                         );
@@ -280,7 +306,7 @@ class CategoriesPage extends GetView<CategoriesController> {
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(20),
                           image: DecorationImage(
-                              image: NetworkImage("https://firebasestorage.googleapis.com/v0/b/yasms-efe24.appspot.com/o/6.jpg?alt=media&token=0063b131-fd7d-48a6-9b4b-364c678ef1a4"),
+                              image: AssetImage("assets/c.jpg"),
                               fit: BoxFit.cover)),
                       child: Transform.translate(
                         offset: Offset(50, -50),
@@ -320,6 +346,7 @@ class CategoriesPage extends GetView<CategoriesController> {
                         Scaffold(
                             appBar: AppBar(
                               title: const Text('Photo'),
+                              backgroundColor: Color(0xFFF70759),
                             ),
                             body:Center(
                               child:
@@ -327,9 +354,9 @@ class CategoriesPage extends GetView<CategoriesController> {
                                   future: Dataservices.fetchProduct(),
                                   builder: (context, AsyncSnapshot<List<dynamic>> snapshot) {
                                     final data = snapshot.data;
-                                    return snapshot.hasData ?
+                                    return enfant!=null?
                                     GridView.builder(
-                                      itemCount:data.length,
+                                      itemCount:enfant.length,
                                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                                         crossAxisCount: MediaQuery.of(context).orientation ==
                                             Orientation.landscape ? 3: 2,
@@ -348,14 +375,18 @@ class CategoriesPage extends GetView<CategoriesController> {
                                               height: double.infinity,
                                               child: FadeInImage.memoryNetwork(
                                                   placeholder: kTransparentImage,
-                                                  image: data[index]["url"],
+                                                  image: enfant[index]["url"],
                                                   fit: BoxFit.fill),
                                             ),
                                           ),
                                         );
                                       },
                                     )
-                                        : const CircularProgressIndicator();
+                                        : Center (
+                                        child: Text(
+                                          "Aucune image"
+                                        ),
+                                    );
                                   }),
                             )
                         );
@@ -373,7 +404,7 @@ class CategoriesPage extends GetView<CategoriesController> {
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(20),
                           image: DecorationImage(
-                              image: NetworkImage("https://firebasestorage.googleapis.com/v0/b/yasms-efe24.appspot.com/o/10.jpg?alt=media&token=8e4d7611-1707-4fe2-ab72-c0feefe37477"),
+                              image: AssetImage("assets/a.jpg"),
                               fit: BoxFit.cover)),
                       child: Transform.translate(
                         offset: Offset(50, -50),
