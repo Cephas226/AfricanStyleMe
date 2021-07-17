@@ -156,7 +156,7 @@ packages:
     source: hosted
     version: "3.7.0"
   collection:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: collection
       url: "https://pub.dartlang.org"
@@ -230,13 +230,6 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
-  flutter_easyloading:
-    dependency: "direct main"
-    description:
-      name: flutter_easyloading
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "3.0.0"
   flutter_plugin_android_lifecycle:
     dependency: transitive
     description:
@@ -251,13 +244,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "4.0.0"
-  flutter_spinkit:
-    dependency: transitive
-    description:
-      name: flutter_spinkit
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "5.0.0"
   flutter_staggered_grid_view:
     dependency: "direct main"
     description:
@@ -295,7 +281,7 @@ packages:
       name: google_fonts
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.1.2"
+    version: "2.1.0"
   graphs:
     dependency: transitive
     description:
@@ -337,7 +323,7 @@ packages:
       name: http
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.12.2"
+    version: "0.13.3"
   http_multi_server:
     dependency: transitive
     description:
@@ -351,7 +337,7 @@ packages:
       name: http_parser
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "3.1.4"
+    version: "4.0.0"
   io:
     dependency: transitive
     description:
@@ -526,7 +512,7 @@ packages:
       name: shelf
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.7.9"
+    version: "1.2.0"
   shelf_web_socket:
     dependency: transitive
     description:

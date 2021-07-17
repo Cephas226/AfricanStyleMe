@@ -3,12 +3,15 @@ import 'package:flutter/material.dart';
 import 'network_image.dart';
 
 class PhotoHero extends StatelessWidget {
-  const PhotoHero({ Key key, this.photo, this.onTap, this.width,this.height }) : super(key: key);
+  const PhotoHero(
+      {Key key, this.photo, this.onTap, this.width, this.height, this.fit})
+      : super(key: key);
 
   final String photo;
   final VoidCallback onTap;
   final double width;
   final double height;
+  final BoxFit fit;
 
   Widget build(BuildContext context) {
     return SizedBox(
@@ -20,9 +23,9 @@ class PhotoHero extends StatelessWidget {
           color: Colors.transparent,
           child: InkWell(
             onTap: onTap,
-            child: PNetworkImage(
+            child: Image.network(
               photo,
-              fit: BoxFit.contain,
+              fit: fit,
             ),
           ),
         ),

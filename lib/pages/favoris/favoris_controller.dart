@@ -24,7 +24,7 @@ class FavorisController extends GetxController {
   }
 
   void fetchfinalphoto() async {
-    isLoading(true);
+   /* isLoading(true);
     try {
       var photos = await Dataservices.getPhoto();
       if (photos != null) {
@@ -32,7 +32,7 @@ class FavorisController extends GetxController {
       }
     } finally {
       isLoading(false);
-    }
+    }*/
   }
   Future<List<Product>> getFavProduct() async {
      box= await Hive.openBox(productBox);
@@ -44,7 +44,6 @@ class FavorisController extends GetxController {
       tmp.categorie = prodMap['categorie'];
       tmp.url = prodMap['url'];
       productList.add(tmp);
-      print("cooly");
     }
     return productList;
   }

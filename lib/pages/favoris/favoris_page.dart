@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:getx_app/model/photo_model.dart';
 import 'package:getx_app/pages/favoris/favoris_controller.dart';

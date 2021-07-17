@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:getx_app/pages/categories/categories_controller.dart';
@@ -6,7 +7,8 @@ import 'package:getx_app/widget/orientation/portrait_player_widget.dart';
 import 'package:transparent_image/transparent_image.dart';
 
 class CategoriesPage extends GetView<CategoriesController> {
-
+  List homme;
+  List femme;
   final CategoriesController _catController = Get.put(CategoriesController());
   @override
   Widget build(BuildContext context) {
@@ -39,9 +41,14 @@ class CategoriesPage extends GetView<CategoriesController> {
                           future: Dataservices.fetchProduct(),
                           builder: (context, AsyncSnapshot<List<dynamic>> snapshot) {
                             final data = snapshot.data;
+
+                            if(data != null){
+                              homme = data.where((o) => o['categorie'] == "Homme").toList();
+                              femme =data.where((o) => o['categorie'] == "Femme").toList();
+                            }
                             return snapshot.hasData ?
                             GridView.builder(
-                              itemCount:data.length,
+                              itemCount:homme.length,
                               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                                 crossAxisCount: MediaQuery.of(context).orientation ==
                                     Orientation.landscape ? 3: 2,
@@ -61,7 +68,7 @@ class CategoriesPage extends GetView<CategoriesController> {
                                       height: double.infinity,
                                       child: FadeInImage.memoryNetwork(
                                           placeholder: kTransparentImage,
-                                          image: data[index]["url"],
+                                          image: homme[index]["url"],
                                           fit: BoxFit.fill),
                                     ),
                                   ),
@@ -136,7 +143,7 @@ class CategoriesPage extends GetView<CategoriesController> {
                                     final data = snapshot.data;
                                     return snapshot.hasData
                                         ? GridView.builder(
-                                      itemCount:data.length,
+                                      itemCount:femme.length,
                                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                                         crossAxisCount: MediaQuery.of(context).orientation ==
                                             Orientation.landscape ? 3: 2,
@@ -155,7 +162,7 @@ class CategoriesPage extends GetView<CategoriesController> {
                                               height: double.infinity,
                                               child: FadeInImage.memoryNetwork(
                                                   placeholder: kTransparentImage,
-                                                  image: data[index]["url"],
+                                                  image: femme[index]["url"],
                                                   fit: BoxFit.fill),
                                             ),
                                           ),
