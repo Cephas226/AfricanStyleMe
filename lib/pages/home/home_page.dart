@@ -144,8 +144,7 @@ class HomePage extends GetView<HomeController> {
                                                               valueChanged:
                                                                   (_isFavorite) {
                                                                 if (_isFavorite) {
-                                                                  _prodController
-                                                                      .addProduct(
+                                                                  _prodController.addProduct(
                                                                       item,
                                                                       context);
                                                                 }
@@ -312,11 +311,11 @@ Widget _buildChip(String label) {
   );
 }
 
-Widget _details(context, item) {
+Widget _details(context, Product item) {
   return Scaffold(
     floatingActionButton: FloatingActionButton(
       onPressed: () {
-        _saveImage(item["url"], item["productId"], context);
+        _saveImage(item.url, item.productId, context);
       },
       child: const Icon(Icons.file_download),
       backgroundColor: Colors.blueAccent,
@@ -337,7 +336,7 @@ Widget _details(context, item) {
             height: double.infinity,
             color: Color(0xFFF70759),
             child: PhotoHero(
-              photo: item["url"],
+              photo: item.url,
               width: double.infinity,
               height: double.infinity,
               onTap: () {

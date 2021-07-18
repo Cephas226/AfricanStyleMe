@@ -12,7 +12,7 @@ final snackBar = SnackBar(content: Text('Desépinglé avec succès'));
 class FavorisPage extends GetView<FavorisController> {
   @override
   Widget build(BuildContext context) {
-    Box settingsBox = Hive.box("product");
+    //Box settingsBox = Hive.box("product");
     return Scaffold(
       appBar: AppBar(
         title: Text(

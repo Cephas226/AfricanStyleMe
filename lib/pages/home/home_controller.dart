@@ -11,23 +11,21 @@ class HomeController extends GetxController {
   RxList<Product> dataProductChip = <Product>[].obs;
   bool favorite= false;
   String productBox = 'product';
-
   //Gestion des chip
 
   var _selectedChip = 0.obs;
   get selectedChip => this._selectedChip.value;
   set selectedChip(index) => this._selectedChip.value = index;
 
-  var _reactChipx = 0.obs;
-  get reactChipx => this._reactChipx.value;
-  set reactChipx(index) => this._reactChipx.value = index;
+  //
+  Box<Product> dataBox;
+
   @override
   void onInit() async {
     super.onInit();
     selectedChip=0;
-   // WidgetsFlutterBinding.ensureInitialized();
-   // dataProduct(getChipProduct(productChip.values[selectedChip]));
     readProduct();
+    //dataBox = Hive.box<Product>(productBox);
   }
   @override
   void dispose() {
@@ -38,8 +36,8 @@ class HomeController extends GetxController {
     request.get().then((value) {
       if(value.statusCode==200){
         List jsonResponse = jsonDecode(value.body);
-        dataProductChip.value=jsonResponse.map((e) => Product.fromJson(e)).toList();
         dataProduct.value = jsonResponse.map((e) => Product.fromJson(e)).toList();
+        dataProductChip.value=dataProduct.reversed.toList();
         print("Loaded");
       }else{
         print('Backend error');
@@ -49,8 +47,9 @@ class HomeController extends GetxController {
     });
   }
   addProduct(prod,context) async {
-    var producBox = await Hive.openBox('product').whenComplete(() =>  ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Image favoris avec succès'))));
+    var producBox = await Hive.openBox('product');
     producBox.add(prod);
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Image favoris avec succès')));
   }
   void removeProduct(int id) async{
     var producBox = await Hive.openBox(productBox);
@@ -72,7 +71,7 @@ class HomeController extends GetxController {
         return  dataProductChip.value = dataProduct.where((o) => o.note >3).toList();
 
       case productChip.MIEUX_NOTE:
-        return dataProductChip.value = dataProduct.where((o) => o.note ==3).toList();
+        return dataProductChip.value = dataProduct.where((o) => o.note >3).toList();
 
       case productChip.ALEATOIRE:
         return dataProductChip.toList();
