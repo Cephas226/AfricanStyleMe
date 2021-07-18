@@ -8,28 +8,33 @@ String todoToJson(List<Product> data) =>
 
 class Product {
   Product({
-    this.photoId,
+    this.productId,
     this.url,
+    this.note,
     this.categorie,
     this.favorite,
   });
 
-  int photoId;
+  int productId;
   String url;
+  int note;
   String categorie;
   bool favorite;
 
   factory Product.fromJson(Map<String, dynamic> json) => Product(
-    photoId: json["photoId"],
+    productId: json["productId"],
     url: json["url"],
+    note: json["note"],
     categorie: json["categorie"],
     favorite: json["favorite"],
   );
 
   Map<String, dynamic> toJson() => {
-    "photoId": photoId,
+    "productId": productId,
     "url": url,
+    "note": note,
     "categorie": categorie,
     "favorite":favorite
   };
 }
+enum productChip { TOUT, RECENT,MIEUX_NOTE, ALEATOIRE }

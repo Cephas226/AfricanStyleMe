@@ -119,52 +119,52 @@ Widget _builListView() {
         final data = snapshot.data;
         return snapshot.hasData
             ?
-        ListView.builder(
-          itemCount: snapshot.data.length,
-          itemBuilder: (context, index) {
-            print(index);
-            return GestureDetector(
-                onTap: () => {},
-                child: ClipRRect(
-                  child: Stack(
-                    children: <Widget>[
-                      Card(
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadiusDirectional.circular(20)),
-                        clipBehavior: Clip.antiAlias,
-                        child:
-                        Container(
-                          padding: const EdgeInsets.all(0.0),
-                          //height: double.infinity,
-                          color: Color(0xFFF70759),
-                          child: PhotoHero(
-                            photo:  data[index].url,
-                            width: double.infinity,
-                            onTap: () {
-                              Navigator.of(context).pop();
-                            },
-                          ),
-                        ),
-                      ),
-                      Positioned(
-                        right: 10,
-                        top: 20,
-                        child: Container(
-                          child: Row(
-                            children: [
-                              IconButton(
-                                  onPressed: ()=>{},
-                                  icon: FavoriteButton(
-                                      iconSize: 40,
-                                      isFavorite: true,
-                                      valueChanged: (_isFavorite) {
-                                        if (!_isFavorite){
-                                         _favController.removeProduct(index);
-                                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                                        }
-                                      }
-                                  )),
-                             /* IconButton(
+              Obx(()=>ListView.builder(
+                itemCount: snapshot.data.length,
+                itemBuilder: (context, index) {
+                  print(index);
+                  return GestureDetector(
+                      onTap: () => {},
+                      child: ClipRRect(
+                        child: Stack(
+                          children: <Widget>[
+                            Card(
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadiusDirectional.circular(20)),
+                              clipBehavior: Clip.antiAlias,
+                              child:
+                              Container(
+                                padding: const EdgeInsets.all(0.0),
+                                //height: double.infinity,
+                                color: Color(0xFFF70759),
+                                child: PhotoHero(
+                                  photo:  data[index].url,
+                                  width: double.infinity,
+                                  onTap: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                ),
+                              ),
+                            ),
+                            Positioned(
+                              right: 10,
+                              top: 20,
+                              child: Container(
+                                child: Row(
+                                  children: [
+                                    IconButton(
+                                        onPressed: ()=>{},
+                                        icon: FavoriteButton(
+                                            iconSize: 40,
+                                            isFavorite: true,
+                                            valueChanged: (_isFavorite) {
+                                              if (!_isFavorite){
+                                                _favController.removeProduct(index);
+                                                ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                                              }
+                                            }
+                                        )),
+                                    /* IconButton(
                                   onPressed:()  =>{
                                     _favController.removeProduct(index),
                                     ScaffoldMessenger.of(context).showSnackBar(snackBar),
@@ -172,19 +172,19 @@ Widget _builListView() {
                                   },
                                   icon:  Icon(Icons.push_pin,color: Colors.red,size: 30,))*/
 
-                            ],
-                          ),
-                          decoration: new BoxDecoration(
-                              color: Colors.white10,
-                              borderRadius:
-                              BorderRadius.all(Radius.circular(50))),
+                                  ],
+                                ),
+                                decoration: new BoxDecoration(
+                                    color: Colors.white10,
+                                    borderRadius:
+                                    BorderRadius.all(Radius.circular(50))),
+                              ),
+                            ),
+                          ],
                         ),
-                      ),
-                    ],
-                  ),
-                ));
-          },
-        )
+                      ));
+                },
+              ))
             : Center(
             child:Text(
               "Aucune image"
