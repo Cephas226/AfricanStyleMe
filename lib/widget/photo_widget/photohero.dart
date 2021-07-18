@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-import 'network_image.dart';
-
 class PhotoHero extends StatelessWidget {
   const PhotoHero(
       {Key key, this.photo, this.onTap, this.width, this.height, this.fit})

@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:getx_app/widget/oval-right-clipper.dart';
+import 'package:getx_app/widget/video_widget/oval-right-clipper.dart';
 import 'package:hive/hive.dart';
-import 'model/photo_model.dart';
 import 'routes/app_pages.dart';
 import 'routes/app_routes.dart';
 import 'themes/app_theme.dart';
-import 'package:path_provider/path_provider.dart' as path_provider;
 import 'package:hive_flutter/hive_flutter.dart';
 final Color active = Colors.black;
 final Color primary =Colors.white;

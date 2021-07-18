@@ -1,29 +1,23 @@
 import 'package:get/get.dart';
 import 'package:getx_app/model/photo_model.dart';
-import 'package:getx_app/services/backend_service.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 class FavorisController extends GetxController {
-  var isLoading = true.obs;
-  var photoList = List<Product>().obs;
-  var current = 0.obs;
   var box;
   String productBox = 'product';
   final String title = 'Accueil';
   List<Product> allProduct = [];
+  List<Product> productList = [];
   @override
   void onInit() async{
-   // allProduct = await getFavProduct();
-    //await Hive.initFlutter();
-    await Hive.openBox("product");
-   // await Hive.openBox('product');
+    await Hive.openBox(productBox);
     super.onInit();
     getFavProduct();
   }
   Future<List<Product>> getFavProduct() async {
     box= await Hive.openBox(productBox);
-    List<Product> productList = [];
+
     for (int i = 0; i < box.length; i++) {
       var prodMap = box.getAt(i).map((k, e) => MapEntry(k.toString(), e));
       Product tmp = Product();
@@ -35,7 +29,7 @@ class FavorisController extends GetxController {
     return productList;
   }
   void removeProduct(int id) async{
-    var producBox = await Hive.openBox('product');
+    var producBox = await Hive.openBox(productBox);
     producBox.deleteAt(id);
     print("succes");
   }

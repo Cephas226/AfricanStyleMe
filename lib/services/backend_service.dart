@@ -1,4 +1,3 @@
-import 'package:getx_app/model/photo_model.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 class Dataservices {
@@ -23,4 +22,5 @@ class Dataservices {
       return json.decode(response.body);
     return [];
   }
+
 }

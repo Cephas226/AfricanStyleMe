@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:getx_app/widget/video_widget/basic_overlay_widget.dart';
 import 'package:video_player/video_player.dart';
 
-import '../basic_overlay_widget.dart';
 
 class VideoPlayerFullscreenWidget extends StatelessWidget {
   final VideoPlayerController controller;

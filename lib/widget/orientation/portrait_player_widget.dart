@@ -1,11 +1,7 @@
 
-
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:getx_app/widget/orientation/video_player_fullscreen_widget.dart';
 import 'package:video_player/video_player.dart';
-
-import '../theme.dart';
 
 class PortraitPlayerWidget extends StatefulWidget {
   @override

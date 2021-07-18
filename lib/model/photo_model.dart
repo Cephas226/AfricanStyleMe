@@ -1,9 +1,5 @@
 import 'dart:convert';
 
-import 'dart:typed_data';
-
-import 'package:hive/hive.dart';
-
 List<Product> productFromJson(String str) =>
     List<Product>.from(json.decode(str).map((x) => Product.fromJson(x)));
 

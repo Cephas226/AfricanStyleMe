@@ -1,14 +1,15 @@
 import 'dart:convert';
 
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:getx_app/model/photo_model.dart';
-import 'package:getx_app/services/backend_service.dart';
 import 'package:hive/hive.dart';
-import 'package:http/http.dart' as http;
 import 'package:getx_app/domain/request.dart';
 class HomeController extends GetxController {
   final String title = 'Accueil';
   RxList<Product> dataProduct = <Product>[].obs;
+  bool favorite= false;
+  String productBox = 'product';
   @override
   void onInit() async {
     super.onInit();
@@ -16,7 +17,6 @@ class HomeController extends GetxController {
   }
   @override
   void dispose() {
-    //Hive.close();
     super.dispose();
   }
   void readProduct() async {
@@ -25,7 +25,7 @@ class HomeController extends GetxController {
       if(value.statusCode==200){
         List jsonResponse = jsonDecode(value.body);
         dataProduct.value = jsonResponse.map((e) => Product.fromJson(e)).toList();
-        print(dataProduct.map((e) => e.url));
+        print("Loaded");
       }else{
         print('Backend error');
       }
@@ -33,12 +33,17 @@ class HomeController extends GetxController {
       printError();
     });
   }
-  addProduct(prod) async {
-    var producBox = await Hive.openBox('product');
+  addProduct(prod,context) async {
+    var producBox = await Hive.openBox('product').whenComplete(() =>  ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Image favoris avec succès'))));
     producBox.add(prod);
-    print(producBox.get(0));
   }
   void removeProduct(int id) async{
-
+    var producBox = await Hive.openBox(productBox);
+    producBox.deleteAt(id);
+    print("succes");
+  }
+  favToggleRepeat(bool newValue) {
+    favorite = newValue;
+    update(['favorite', true]);
   }
 }

@@ -1,21 +1,27 @@
-import 'dart:async';
-
+import 'package:favorite_button/favorite_button.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:getx_app/model/photo_model.dart';
 import 'package:getx_app/pages/favoris/favoris_controller.dart';
+import 'package:getx_app/widget/photo_widget/photohero.dart';
 import 'package:hive/hive.dart';
-import 'package:hive_listener/hive_listener.dart';
 import 'package:transparent_image/transparent_image.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 final FavorisController _favController = Get.put(FavorisController());
-
+final snackBar = SnackBar(content: Text('Desépinglé avec succès'));
 class FavorisPage extends GetView<FavorisController> {
   @override
   Widget build(BuildContext context) {
     Box settingsBox = Hive.box("product");
     return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          "Favoris",
+          style: TextStyle(color: Colors.black),
+        ),
+        elevation: 0,
+        backgroundColor: Colors.white,
+      ),
       body: _builListView(),
     );
     /*    ListView(
@@ -106,92 +112,65 @@ class FavorisPage extends GetView<FavorisController> {
 }
 
 Widget _builListView() {
-/*  return GetBuilder<FavorisController>(
-      init: FavorisController(),
-      builder: (favController) {
-        return Scaffold(
-            body: ListView.builder(
-                itemCount: favController.allProduct.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return GestureDetector(
-                      onTap: () => {},
-                      child: ClipRRect(
-                        child: Stack(
-                          children: <Widget>[
-                            Container(
-                              height: 600,
-                              width: double.infinity,
-                              child: FadeInImage.memoryNetwork(
-                                  placeholder: kTransparentImage,
-                                  image: _favController.allProduct[index].url,
-                                  fit: BoxFit.fill),
-                            ),
-                            Positioned(
-                              right: 80,
-                              bottom: 550,
-                              child: Container(
-                                child: Row(
-                                  children: [
-                                    IconButton(
-                                        onPressed: () => {
-                                              _favController
-                                                  .removeProduct(index),
-                                            },icon:  Icon(Icons.push_pin,color: Colors.red,size: 30,))
-                                  ],
-                                ),
-                                decoration: new BoxDecoration(
-                                    color: Colors.white10,
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(50))),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ));
-                }));
-      });*/
-
-  return FutureBuilder(
+  return
+    FutureBuilder(
       future: _favController.getFavProduct(),
       builder: (context, AsyncSnapshot<List<dynamic>> snapshot) {
         final data = snapshot.data;
         return snapshot.hasData
-            ?ListView.builder(
+            ?
+        ListView.builder(
           itemCount: snapshot.data.length,
           itemBuilder: (context, index) {
+            print(index);
             return GestureDetector(
                 onTap: () => {},
                 child: ClipRRect(
                   child: Stack(
                     children: <Widget>[
-                      Container(
-                        height: 600,
-                        width: double.infinity,
-                        child: FadeInImage.memoryNetwork(
-                            placeholder: kTransparentImage,
-                            image: data[index].url,
-                            fit: BoxFit.fill),
+                      Card(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadiusDirectional.circular(20)),
+                        clipBehavior: Clip.antiAlias,
+                        child:
+                        Container(
+                          padding: const EdgeInsets.all(0.0),
+                          //height: double.infinity,
+                          color: Color(0xFFF70759),
+                          child: PhotoHero(
+                            photo:  data[index].url,
+                            width: double.infinity,
+                            onTap: () {
+                              Navigator.of(context).pop();
+                            },
+                          ),
+                        ),
                       ),
                       Positioned(
-                        right: 80,
-                        bottom: 550,
+                        right: 10,
+                        top: 20,
                         child: Container(
                           child: Row(
                             children: [
                               IconButton(
+                                  onPressed: ()=>{},
+                                  icon: FavoriteButton(
+                                      iconSize: 40,
+                                      isFavorite: true,
+                                      valueChanged: (_isFavorite) {
+                                        if (!_isFavorite){
+                                         _favController.removeProduct(index);
+                                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                                        }
+                                      }
+                                  )),
+                             /* IconButton(
                                   onPressed:()  =>{
                                     _favController.removeProduct(index),
-                                  }
-                                  /* onPressed:() async =>{
-                                  _favController.removeProduct(index),
-                                  _timer?.cancel();
-                                  await EasyLoading.show(
-                                  status: 'loading...',
-                                  maskType: EasyLoadingMaskType.black,
-                                  );
-                                  print('EasyLoading show');
-                                 _favController.getFavProduct(),
-                                 }*/, icon:  Icon(Icons.push_pin,color: Colors.red,size: 30,))
+                                    ScaffoldMessenger.of(context).showSnackBar(snackBar),
+                                    _favController.getFavProduct(),
+                                  },
+                                  icon:  Icon(Icons.push_pin,color: Colors.red,size: 30,))*/
 
                             ],
                           ),
@@ -207,7 +186,9 @@ Widget _builListView() {
           },
         )
             : Center(
-            child:
-            new CircularProgressIndicator());
+            child:Text(
+              "Aucune image"
+            )
+        );
       });
 }

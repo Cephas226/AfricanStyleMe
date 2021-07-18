@@ -16,3 +16,4 @@ class FloatingActionButtonWidget extends StatelessWidget {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       );
 }
+

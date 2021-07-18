@@ -2,9 +2,9 @@ import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:getx_app/widget/other/floating_action_button_widget.dart';
+import 'package:getx_app/widget/video_widget/video_player_widget.dart';
 import 'package:video_player/video_player.dart';
 
-import '../video_player_widget.dart';
 
 class FilePlayerWidget extends StatefulWidget {
   @override
