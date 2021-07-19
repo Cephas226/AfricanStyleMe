@@ -1,6 +1,7 @@
 import 'package:favorite_button/favorite_button.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:getx_app/model/product_model.dart';
 import 'package:getx_app/pages/favoris/favoris_controller.dart';
 import 'package:getx_app/widget/photo_widget/photohero.dart';
 import 'package:hive/hive.dart';
@@ -112,8 +113,85 @@ class FavorisPage extends GetView<FavorisController> {
 }
 
 Widget _builListView() {
-  return
-    FutureBuilder(
+  return ValueListenableBuilder(
+     valueListenable: _favController.valueListenable,
+    builder: (context, box, _) {
+       print(box.values);
+      if (box.values.length == 0)
+        return Center(
+          child: Text("Aucune image"),
+        );
+      return ListView.builder(
+        primary: true,
+        padding: EdgeInsets.only(bottom: 95),
+        itemCount: box.values.length,
+        itemBuilder: (context, int index) {
+          Product product = box.getAt(index);
+          return GestureDetector(
+              onTap: () => {},
+              child: ClipRRect(
+                child: Stack(
+                  children: <Widget>[
+                    Card(
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadiusDirectional.circular(20)),
+                      clipBehavior: Clip.antiAlias,
+                      child:
+                      Container(
+                        padding: const EdgeInsets.all(0.0),
+                        //height: double.infinity,
+                        color: Color(0xFFF70759),
+                        child: PhotoHero(
+                          photo:  product.url,
+                          width: double.infinity,
+                          onTap: () {
+                            Navigator.of(context).pop();
+                          },
+                        ),
+                      ),
+                    ),
+                    Positioned(
+                      right: 10,
+                      top: 20,
+                      child: Container(
+                        child: Row(
+                          children: [
+                            IconButton(
+                                onPressed: ()=>{},
+                                icon: FavoriteButton(
+                                    iconSize: 40,
+                                    isFavorite: true,
+                                    valueChanged: (_isFavorite) {
+                                      if (!_isFavorite){
+                                        _favController.removeProduct(index);
+                                        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                                      }
+                                    }
+                                )),
+                            /* IconButton(
+                                  onPressed:()  =>{
+                                    _favController.removeProduct(index),
+                                    ScaffoldMessenger.of(context).showSnackBar(snackBar),
+                                    _favController.getFavProduct(),
+                                  },
+                                  icon:  Icon(Icons.push_pin,color: Colors.red,size: 30,))*/
+
+                          ],
+                        ),
+                        decoration: new BoxDecoration(
+                            color: Colors.white10,
+                            borderRadius:
+                            BorderRadius.all(Radius.circular(50))),
+                      ),
+                    ),
+                  ],
+                ),
+              ));
+        },
+      );
+    },
+  );
+  /*FutureBuilder(
       future: _favController.getFavProduct(),
       builder: (context, AsyncSnapshot<List<dynamic>> snapshot) {
         final data = snapshot.data;
@@ -163,13 +241,13 @@ Widget _builListView() {
                                               }
                                             }
                                         )),
-                                    /* IconButton(
+                                    *//* IconButton(
                                   onPressed:()  =>{
                                     _favController.removeProduct(index),
                                     ScaffoldMessenger.of(context).showSnackBar(snackBar),
                                     _favController.getFavProduct(),
                                   },
-                                  icon:  Icon(Icons.push_pin,color: Colors.red,size: 30,))*/
+                                  icon:  Icon(Icons.push_pin,color: Colors.red,size: 30,))*//*
 
                                   ],
                                 ),
@@ -189,5 +267,5 @@ Widget _builListView() {
               "Aucune image"
             )
         );
-      });
+      });*/
 }

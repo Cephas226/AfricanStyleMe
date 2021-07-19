@@ -31,6 +31,7 @@ class HomeController extends GetxController {
     selectedChip=0;
     readProduct();
     //await Hive.openBox<Product>(productBoxName);
+
     productBox = Hive.box<Product>(productBoxName);
     //
   }
@@ -74,7 +75,7 @@ class HomeController extends GetxController {
        return  dataProductChip.value=dataProduct.reversed.toList();
 
       case productChip.RECENT:
-        return  dataProductChip.value = dataProduct.where((o) => o.note >3).toList();
+        return  dataProductChip.value = dataProduct;
 
       case productChip.MIEUX_NOTE:
         return dataProductChip.value = dataProduct.where((o) => o.note >3).toList();

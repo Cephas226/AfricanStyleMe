@@ -4,7 +4,7 @@ import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 class FavorisController extends GetxController {
-  var box;
+  //var box;
   String productBoxName = 'product';
   final String title = 'Accueil';
   List<Product> allProduct = [];
@@ -12,12 +12,14 @@ class FavorisController extends GetxController {
   //RxList<Product> productList = <Product>[].obs;
 
   Box<Product> productBox;
+  var valueListenable;
   @override
   void onInit() async{
    // await Hive.openBox(productBox);
     super.onInit();
     getFavProduct();
     productBox = Hive.box<Product>(productBoxName);
+    valueListenable=Hive.box<Product>(productBoxName).listenable();
   }
   Future<List<Product>> getFavProduct() async {
     //box= await Hive.openBox(productBox);
@@ -35,7 +37,6 @@ class FavorisController extends GetxController {
     return productList;
   }
   void removeProduct(int id) async{
-    //var producBox = await Hive.openBox(productBox);
     productBox.deleteAt(id);
     print("succes");
   }
