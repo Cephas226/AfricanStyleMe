@@ -57,7 +57,7 @@ class HomeController extends GetxController {
   addProduct(Product prod,context) async {
     productBox.add(prod);
     //print(productBox);
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Image favoris avec succès')));
+  ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Enregistré dans favoris')));
   }
   void removeProduct(int id) async{
     //var producBox = await Hive.openBox(productBox);

@@ -9,20 +9,16 @@ class FavorisController extends GetxController {
   final String title = 'Accueil';
   List<Product> allProduct = [];
  List<Product> productList = [];
-  //RxList<Product> productList = <Product>[].obs;
-
   Box<Product> productBox;
   var valueListenable;
   @override
   void onInit() async{
-   // await Hive.openBox(productBox);
     super.onInit();
     getFavProduct();
     productBox = Hive.box<Product>(productBoxName);
     valueListenable=Hive.box<Product>(productBoxName).listenable();
   }
   Future<List<Product>> getFavProduct() async {
-    //box= await Hive.openBox(productBox);
     if (productBox!=null){
       for (int i = 0; i < productBox.length; i++) {
         var prodMap = productBox.getAt(i);

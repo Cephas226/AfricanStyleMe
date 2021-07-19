@@ -9,7 +9,7 @@ class PortraitPlayerWidget extends StatefulWidget {
 }
 class _PortraitPlayerWidgetState extends State<PortraitPlayerWidget> {
   VideoPlayerController controller;
-  final urlPortraitVideo = 'https://assets.mixkit.co/videos/preview/mixkit-group-of-friends-partying-happily-4640-large.mp4';
+  final urlPortraitVideo = 'https://firebasestorage.googleapis.com/v0/b/africanstyle-15779.appspot.com/o/2020%20AFRICAN%20DRESSES%20MOST%20STYLISH%20AND%20FLAWLESS%20AFRICAN%20ANKARA%20STYLES%20FOR%20BEAUTIFUL%20LADIES.mp4?alt=media&token=84b246f7-e450-4c74-bfe8-da7061b86fef';
 
 
   @override

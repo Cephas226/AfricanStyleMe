@@ -2,6 +2,7 @@ import 'dart:typed_data';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:get/get.dart';
 import 'package:getx_app/model/product_model.dart';
@@ -14,6 +15,7 @@ import 'package:transparent_image/transparent_image.dart';
 import 'package:favorite_button/favorite_button.dart';
 import '../../main.dart';
 import 'home_controller.dart';
+import 'package:share/share.dart';
 
 class HomePage extends GetView<HomeController> {
   final HomeController _prodController = Get.put(HomeController());
@@ -77,7 +79,8 @@ class HomePage extends GetView<HomeController> {
                               padding: const EdgeInsets.all(2.0),
                               children: _prodController.dataProductChip
                                   .map<Widget>((item) {
-                                return new Container(
+                                return new
+                                Container(
                                   decoration: BoxDecoration(
                                       color: Colors.transparent,
                                       borderRadius: BorderRadius.all(
@@ -209,49 +212,65 @@ class HomePage extends GetView<HomeController> {
                               ),
                               itemBuilder: (BuildContext context, int itemIndex,
                                       int pageViewIndex) =>
-                                  ClipRRect(
-                                child: Stack(
-                                  children: <Widget>[
-                                    Container(
-                                      height: 600,
-                                      width: double.infinity,
-                                      child: FadeInImage.memoryNetwork(
-                                          placeholder: kTransparentImage,
-                                          image: data[itemIndex]["url"],
-                                          fit: BoxFit.fill),
-                                    ),
-                                    Positioned(
-                                      left: 80,
-                                      top: 500,
-                                      child: Container(
-                                        child: Row(
-                                          children: [
-                                            RatingBar.builder(
-                                              initialRating: 3,
-                                              minRating: 1,
-                                              direction: Axis.horizontal,
-                                              allowHalfRating: true,
-                                              itemCount: 5,
-                                              itemPadding: EdgeInsets.symmetric(
-                                                  horizontal: 4.0),
-                                              itemBuilder: (context, _) => Icon(
-                                                Icons.star,
-                                                color: Colors.amber,
-                                              ),
-                                              onRatingUpdate: (rating) {
-                                              },
-                                            )
-                                          ],
+                                  Stack(
+                                    children: <Widget>[
+                                      Card(
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadiusDirectional.circular(20)),
+                                        clipBehavior: Clip.antiAlias,
+                                        child: Container(
+                                          padding: const EdgeInsets.all(0.0),
+                                          height: double.infinity,
+                                          color: Color(0xFFF70759),
+                                          child: PhotoHero(
+                                            photo: data[itemIndex]["url"],
+                                            width: double.infinity,
+                                            height: double.infinity,
+                                            onTap: () {
+                                              print("cooly");
+                                            },
+                                          ),
                                         ),
-                                        decoration: new BoxDecoration(
-                                            color: Colors.white24,
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(12))),
                                       ),
-                                    ),
-                                  ],
-                                ),
-                              ),
+                                      /*Container(
+                                        height: 600,
+                                        width: double.infinity,
+                                        child: FadeInImage.memoryNetwork(
+                                            placeholder: kTransparentImage,
+                                            image: data[itemIndex]["url"],
+                                            fit: BoxFit.fill),
+                                      ),*/
+                                      Positioned(
+                                        left: 80,
+                                        top: 500,
+                                        child: Container(
+                                          child: Row(
+                                            children: [
+                                              RatingBar.builder(
+                                                initialRating: 3,
+                                                minRating: 1,
+                                                direction: Axis.horizontal,
+                                                allowHalfRating: true,
+                                                itemCount: 5,
+                                                itemPadding: EdgeInsets.symmetric(
+                                                    horizontal: 4.0),
+                                                itemBuilder: (context, _) => Icon(
+                                                  Icons.star,
+                                                  color: Colors.amber,
+                                                ),
+                                                onRatingUpdate: (rating) {
+                                                },
+                                              )
+                                            ],
+                                          ),
+                                          decoration: new BoxDecoration(
+                                              color: Colors.white24,
+                                              borderRadius: BorderRadius.all(
+                                                  Radius.circular(12))),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                             )
                           : const CircularProgressIndicator();
                     }),
@@ -293,13 +312,7 @@ class HomePage extends GetView<HomeController> {
 
 Widget _details(context, Product item) {
   return Scaffold(
-    floatingActionButton: FloatingActionButton(
-      onPressed: () {
-        _saveImage(item.url, item.productId, context);
-      },
-      child: const Icon(Icons.file_download),
-      backgroundColor: Colors.blueAccent,
-    ),
+    floatingActionButton: buildSpeedDial(),
     appBar: AppBar(
       backgroundColor: Color(0xFFF70759),
       title: const Text('Details'),
@@ -326,8 +339,9 @@ Widget _details(context, Product item) {
           ),
         ),
         Positioned(
-            bottom: 150,
-            left: 10,
+            bottom: 90.0,
+            right: 0.0,
+            left: 0.0,
             child: Container(
               width: 200,
               decoration: new BoxDecoration(
@@ -373,4 +387,52 @@ _saveImage(url, name, context) async {
   ScaffoldMessenger.of(context)
       .showSnackBar(SnackBar(content: Text('Image sauvegardée avec succès')));
   print(result);
+}
+SpeedDial buildSpeedDial() {
+  return SpeedDial(
+    animatedIcon: AnimatedIcons.menu_close,
+    animatedIconTheme: IconThemeData(size: 28.0),
+    backgroundColor: Colors.blue[900],
+    visible: true,
+    curve: Curves.easeInCubic,
+    children: [
+      SpeedDialChild(
+        child: Icon(Icons.file_download, color: Colors.white),
+        backgroundColor: Colors.blueAccent,
+        onTap: () => print('Pressed Read Later'),
+        labelStyle:
+        TextStyle(fontWeight: FontWeight.w500, color: Colors.white),
+        labelBackgroundColor: Colors.black,
+      ),
+      SpeedDialChild(
+        child: Icon(Icons.favorite, color: Colors.white),
+        backgroundColor: Colors.blueAccent,
+        onTap: () => print('Pressed Write'),
+        labelStyle:
+        TextStyle(fontWeight: FontWeight.w500, color: Colors.white),
+        labelBackgroundColor: Colors.black,
+      ),
+      SpeedDialChild(
+        child: Icon(Icons.share, color: Colors.white),
+        backgroundColor: Colors.blueAccent,
+        onTap: () => Share.share('https://myafricanstyle.herokuapp.com/files/53b7cd56-ae18-4277-ab94-6a929b63f739', subject: 'Look what I made!'),
+        labelStyle:
+        TextStyle(fontWeight: FontWeight.w500, color: Colors.white),
+        labelBackgroundColor: Colors.black,
+      ),
+    ],
+  );
+}
+
+_onShareData(BuildContext context,url) async {
+
+  final RenderBox box = context.findRenderObject();
+
+  if (url.isNotEmpty) {
+    await Share.shareFiles(url,
+        sharePositionOrigin: box.localToGlobal(Offset.zero) & box.size);
+  } else {
+    await Share.share(url,
+        sharePositionOrigin: box.localToGlobal(Offset.zero) & box.size);
+  }
 }
