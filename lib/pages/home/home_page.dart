@@ -189,8 +189,8 @@ class HomePage extends GetView<HomeController> {
                     ],
                   ),
                 ),
-              )
-              ,Center(
+              ),
+              Center(
                 child: FutureBuilder(
                     future: Dataservices.fetchProduct(),
                     builder: (context, AsyncSnapshot<List<dynamic>> snapshot) {
@@ -239,7 +239,6 @@ class HomePage extends GetView<HomeController> {
                                                 color: Colors.amber,
                                               ),
                                               onRatingUpdate: (rating) {
-                                                print(rating);
                                               },
                                             )
                                           ],
@@ -290,25 +289,6 @@ class HomePage extends GetView<HomeController> {
           )),
     );
   }
-}
-
-Widget _buildChip(String label) {
-  return FilterChip(
-    labelPadding: EdgeInsets.all(2.0),
-    label: Text(
-      label,
-      style: TextStyle(
-        color: Colors.black,
-      ),
-    ),
-    backgroundColor: Colors.transparent,
-    elevation: 6.0,
-    onSelected: (bool value) {
-      print("selected");
-    },
-    shadowColor: Colors.grey[60],
-    padding: EdgeInsets.all(10.0),
-  );
 }
 
 Widget _details(context, Product item) {

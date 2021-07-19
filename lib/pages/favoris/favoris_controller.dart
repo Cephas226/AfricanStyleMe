@@ -5,33 +5,38 @@ import 'package:hive_flutter/hive_flutter.dart';
 
 class FavorisController extends GetxController {
   var box;
-  String productBox = 'product';
+  String productBoxName = 'product';
   final String title = 'Accueil';
   List<Product> allProduct = [];
- // List<Product> productList = [];
-  RxList<Product> productList = <Product>[].obs;
+ List<Product> productList = [];
+  //RxList<Product> productList = <Product>[].obs;
+
+  Box<Product> productBox;
   @override
   void onInit() async{
-    await Hive.openBox(productBox);
+   // await Hive.openBox(productBox);
     super.onInit();
     getFavProduct();
+    productBox = Hive.box<Product>(productBoxName);
   }
   Future<List<Product>> getFavProduct() async {
-    box= await Hive.openBox(productBox);
-
-    for (int i = 0; i < box.length; i++) {
-      var prodMap = box.getAt(i).map((k, e) => MapEntry(k.toString(), e));
-      Product tmp = Product();
-      tmp.productId = prodMap['productId'];
-      tmp.categorie = prodMap['categorie'];
-      tmp.url = prodMap['url'];
-      productList.add(tmp);
+    //box= await Hive.openBox(productBox);
+    if (productBox!=null){
+      for (int i = 0; i < productBox.length; i++) {
+        var prodMap = productBox.getAt(i);
+        Product tmp = Product();
+        tmp.productId = prodMap.productId;
+        tmp.categorie = prodMap.categorie;
+        tmp.url = prodMap.url;
+        productList.add(tmp);
+      }
     }
+    productList.forEach((element) {print(element);});
     return productList;
   }
   void removeProduct(int id) async{
-    var producBox = await Hive.openBox(productBox);
-    producBox.deleteAt(id);
+    //var producBox = await Hive.openBox(productBox);
+    productBox.deleteAt(id);
     print("succes");
   }
 }

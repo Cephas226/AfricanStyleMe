@@ -4,34 +4,25 @@ import 'package:hive/hive.dart';
 
 part 'product_model.g.dart';
 
-List<Product> productFromJson(String str) =>
-    List<Product>.from(json.decode(str).map((x) => Product.fromJson(x)));
-
-String todoToJson(List<Product> data) =>
-    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
-
 @HiveType(typeId: 0)
 class Product {
-  Product({
-    @HiveField(0)
-    this.photoId,
-    @HiveField(1)
-    this.productId,
-    @HiveField(2)
-    this.url,
-    @HiveField(3)
-    this.note,
-    @HiveField(4)
-    this.categorie,
-    @HiveField(5)
-    this.favorite,
-  });
-  int photoId;
+
+  @HiveField(0)
   int productId;
+
+  @HiveField(1)
   String url;
+
+  @HiveField(2)
   int note;
+
+  @HiveField(3)
   String categorie;
+
+  @HiveField(4)
   bool favorite;
+
+  Product({this.productId, this.url, this.note, this.categorie, this.favorite});
 
   factory Product.fromJson(Map<String, dynamic> json) => Product(
     productId: json["productId"],
@@ -48,5 +39,14 @@ class Product {
     "categorie": categorie,
     "favorite":favorite
   };
+  List<Product> productFromJson(String str) =>
+      List<Product>.from(json.decode(str).map((x) => Product.fromJson(x)));
+
+  String todoToJson(List<Product> data) =>
+      json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+  @override
+  String toString() {
+    return '{productId: $productId, url: $url,note:$note,categorie:$categorie,favorite:$favorite}';
+  }
 }
 enum productChip { TOUT, RECENT,MIEUX_NOTE, ALEATOIRE }

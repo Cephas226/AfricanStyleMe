@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -10,22 +11,28 @@ class HomeController extends GetxController {
   RxList<Product> dataProduct = <Product>[].obs;
   RxList<Product> dataProductChip = <Product>[].obs;
   bool favorite= false;
-  String productBox = 'product';
+  String productBoxName = 'product';
   //Gestion des chip
+
+  List _inventoryList = <Product>[];
+
+  List get inventoryList => _inventoryList;
 
   var _selectedChip = 0.obs;
   get selectedChip => this._selectedChip.value;
   set selectedChip(index) => this._selectedChip.value = index;
 
-  //
-  Box<Product> dataBox;
+  //Box
+  Box<Product> productBox;
 
   @override
   void onInit() async {
     super.onInit();
     selectedChip=0;
     readProduct();
-    //dataBox = Hive.box<Product>(productBox);
+    //await Hive.openBox<Product>(productBoxName);
+    productBox = Hive.box<Product>(productBoxName);
+    //
   }
   @override
   void dispose() {
@@ -46,14 +53,14 @@ class HomeController extends GetxController {
       printError();
     });
   }
-  addProduct(prod,context) async {
-    var producBox = await Hive.openBox('product');
-    producBox.add(prod);
+  addProduct(Product prod,context) async {
+    productBox.add(prod);
+    //print(productBox);
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Image favoris avec succès')));
   }
   void removeProduct(int id) async{
-    var producBox = await Hive.openBox(productBox);
-    producBox.deleteAt(id);
+    //var producBox = await Hive.openBox(productBox);
+    productBox.deleteAt(id);
     print("succes");
   }
   favToggleRepeat(bool newValue) {
@@ -62,7 +69,6 @@ class HomeController extends GetxController {
   }
 
   List<dynamic> getChipProduct(productChip chip) {
-    print(chip.index);
     switch (chip) {
       case productChip.TOUT:
        return  dataProductChip.value=dataProduct.reversed.toList();

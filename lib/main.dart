@@ -10,7 +10,7 @@ import 'themes/app_theme.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 final Color active = Colors.black;
 final Color primary =Colors.white;
-const String prodBoxName = "product";
+const String productBoxName = "product";
 void main() async{
   //await Hive.initFlutter('example_hive_folder');
  //
@@ -18,6 +18,7 @@ void main() async{
   final document = await getApplicationDocumentsDirectory();
   Hive.init(document.path);
   Hive.registerAdapter(ProductAdapter());
+  await Hive.openBox<Product>(productBoxName);
   //await Hive.openBox<Product>(prodBoxName);
   runApp(MyApp());
 }

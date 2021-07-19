@@ -117,12 +117,11 @@ Widget _builListView() {
       future: _favController.getFavProduct(),
       builder: (context, AsyncSnapshot<List<dynamic>> snapshot) {
         final data = snapshot.data;
-        return snapshot.hasData
-            ?
-              Obx(()=>ListView.builder(
+        return snapshot.hasData?
+                  ListView.builder(
                 itemCount: snapshot.data.length,
                 itemBuilder: (context, index) {
-                  print(index);
+                  print(data[index].url);
                   return GestureDetector(
                       onTap: () => {},
                       child: ClipRRect(
@@ -184,7 +183,7 @@ Widget _builListView() {
                         ),
                       ));
                 },
-              ))
+              )
             : Center(
             child:Text(
               "Aucune image"
