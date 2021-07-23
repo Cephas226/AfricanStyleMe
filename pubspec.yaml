@@ -71,6 +71,8 @@ flutter:
       - assets/a.jpg
       - assets/b.jpg
       - assets/c.jpg
+      - assets/d.jpg
+
       - assets/pagne81.jpg
       - assets/vod.mp4
       - assets/spook.png

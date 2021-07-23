@@ -230,7 +230,7 @@ class CategoriesPage extends GetView<CategoriesController> {
             _gestureDetector(context, "categorie", "Homme","assets/a.jpg"),
             _gestureDetector(context, "categorie", "Femme","assets/b.jpg"),
             _gestureDetector(context, "categorie", "Couple","assets/c.jpg"),
-            _gestureDetector(context, "categorie", "Enfant","assets/a.jpg")
+            _gestureDetector(context, "categorie", "Enfant","assets/d.jpg")
           ],
         ),
       ),

@@ -66,7 +66,7 @@ class _Tik extends State<Tik> with SingleTickerProviderStateMixin {
             });
           },
           scrollDirection: Axis.vertical,
-          itemCount: 5,
+          itemCount: 1,
           itemBuilder: (context, index){
             return Stack(
               children: <Widget>[
