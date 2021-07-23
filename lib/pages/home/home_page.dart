@@ -116,12 +116,14 @@ class HomePage extends GetView<HomeController> {
                                         children: [
                                           GestureDetector(
                                             onTap: () {
-                                              Navigator.of(context).push(
+                                              Get.to(() => _details(context, item))
+                                                  /*Navigator.of(context).push(
                                                   MaterialPageRoute<void>(
                                                       builder: (BuildContext
                                                           context) {
                                                 return _details(context, item);
-                                              }));
+                                              }))*/
+                                                  ;
                                             },
                                             child: Card(
                                               shape: RoundedRectangleBorder(
@@ -227,7 +229,7 @@ class HomePage extends GetView<HomeController> {
                               options: CarouselOptions(
                                 height: 800,
                                 scrollDirection: Axis.vertical,
-                                initialPage: 2,
+                                initialPage: 0,
                                 viewportFraction: 1,
                                 aspectRatio: 16 / 9,
                                 enableInfiniteScroll: false,
@@ -248,7 +250,8 @@ class HomePage extends GetView<HomeController> {
                                       height: double.infinity,
                                       color: Color(0xFFF70759),
                                       child: PhotoHero(
-                                        photo: data[itemIndex]["url"],
+                                        photo: data.reversed.toList()[itemIndex]
+                                            ["url"],
                                         width: double.infinity,
                                         height: double.infinity,
                                         onTap: () {
@@ -292,8 +295,7 @@ class HomePage extends GetView<HomeController> {
                     }),
               ),
               Center(
-                child:
-                TokPage(),
+                child: TokPage(),
               ),
             ],
           )),
@@ -306,98 +308,118 @@ Widget _details(context, Product item) {
     floatingActionButton: buildSpeedDial(),
     appBar: AppBar(
       backgroundColor: Color(0xFFF70759),
-      title: const Text('Details'),
+      title: const Text('Detail'),
     ),
-    body: Stack(
-      fit: StackFit.passthrough,
-      children: [
-        Card(
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadiusDirectional.circular(20)),
-          clipBehavior: Clip.antiAlias,
-          child: Container(
-            padding: const EdgeInsets.all(0.0),
-            height: double.infinity,
-            color: Color(0xFFF70759),
-            child: PhotoHero(
-              photo: item.url,
-              width: double.infinity,
-              height: double.infinity,
-              onTap: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ),
-        ),
-        Padding(
-            padding: EdgeInsets.only(bottom: 65, right: 10),
-            child: Align(
-              alignment: Alignment.bottomRight,
-              child: Container(
-                width: 70,
-                height: 400,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: <Widget>[
-                    Container(
-                      padding: EdgeInsets.only(bottom: 25),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: <Widget>[
-                          Icon(Icons.favorite, size: 35, color: Colors.white),
-                          Text('427.9K', style: TextStyle(color: Colors.white))
-                        ],
-                      ),
-                    ),
-                    Container(
-                      padding: EdgeInsets.only(bottom: 20),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: <Widget>[
-                          Transform(
-                              alignment: Alignment.center,
-                              transform: Matrix4.rotationY(math.pi),
-                              child: Icon(Icons.sms,
-                                  size: 35, color: Colors.white)),
-                          Text('2051', style: TextStyle(color: Colors.white))
-                        ],
-                      ),
-                    ),
-                    Container(
-                      padding: EdgeInsets.only(bottom: 50),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: <Widget>[
-                          Transform(
-                              alignment: Alignment.center,
-                              transform: Matrix4.rotationY(math.pi),
-                              child: Icon(Icons.reply,
-                                  size: 35, color: Colors.white)),
-                          Text('Partager',
-                              style: TextStyle(color: Colors.white))
-                        ],
-                      ),
-                    ),
-                    /*AnimatedBuilder(
-                      animation: animationController,
-                      child: CircleAvatar(
-                        radius: 22,
-                        backgroundColor: Color(0x222222).withOpacity(1),
-                        child: CircleAvatar(
-                          radius: 12,
-                          backgroundImage: AssetImage('assets/oboy.jpg'),
+    body: FutureBuilder(
+        future: Dataservices.fetchProduct(),
+        builder: (context, AsyncSnapshot<List<dynamic>> snapshot) {
+          final data = snapshot.data;
+          return snapshot.hasData
+              ? CarouselSlider.builder(
+                  itemCount: snapshot.data.length,
+                  options: CarouselOptions(
+                    height: 800,
+                    scrollDirection: Axis.vertical,
+                    initialPage: 2,
+                    viewportFraction: 1,
+                    aspectRatio: 16 / 9,
+                    enableInfiniteScroll: false,
+                    autoPlay: false,
+                  ),
+                  itemBuilder: (BuildContext context, int itemIndex,
+                          int pageViewIndex) =>
+                      Stack(
+                    children: <Widget>[
+                      Card(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadiusDirectional.circular(20)),
+                        clipBehavior: Clip.antiAlias,
+                        child: Container(
+                          padding: const EdgeInsets.all(0.0),
+                          height: double.infinity,
+                          color: Color(0xFFF70759),
+                          child: PhotoHero(
+                            photo: data.reversed.toList()[itemIndex]["url"],
+                            width: double.infinity,
+                            height: double.infinity,
+                            onTap: () {
+                              Get.back();
+                            },
+                          ),
                         ),
                       ),
-                      builder: (context, _widget){
-                        return Transform.rotate(angle: animationController.value*6.3,
-                            child:_widget);
-                      },)*/
-                  ],
-                ),
-              ),
-            ))
-      ],
-    ),
+                      Padding(
+                          padding: EdgeInsets.only(bottom: 65, right: 10),
+                          child: Align(
+                              alignment: Alignment.bottomRight,
+                              child: Container(
+                                width: 70,
+                                height: 400,
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: <Widget>[
+                                    Container(
+                                      padding: EdgeInsets.only(bottom: 25),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: <Widget>[
+                                          Icon(Icons.favorite,
+                                              size: 35, color: Colors.white),
+                                          Text('427.9K',
+                                              style: TextStyle(
+                                                  color: Colors.white))
+                                        ],
+                                      ),
+                                    ),
+                                    Container(
+                                      padding: EdgeInsets.only(bottom: 20),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: <Widget>[
+                                          Transform(
+                                              alignment: Alignment.center,
+                                              transform:
+                                                  Matrix4.rotationY(math.pi),
+                                              child: Icon(Icons.sms,
+                                                  size: 35,
+                                                  color: Colors.white)),
+                                          Text('2051',
+                                              style: TextStyle(
+                                                  color: Colors.white))
+                                        ],
+                                      ),
+                                    ),
+                                    Container(
+                                      padding: EdgeInsets.only(bottom: 50),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: <Widget>[
+                                          Transform(
+                                              alignment: Alignment.center,
+                                              transform:
+                                                  Matrix4.rotationY(math.pi),
+                                              child: Icon(Icons.reply,
+                                                  size: 35,
+                                                  color: Colors.white)),
+                                          Text('Partager',
+                                              style: TextStyle(
+                                                  color: Colors.white))
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ))),
+                    ],
+                  ),
+                )
+              : Center(
+            child: CircularProgressIndicator(),
+          );
+        }),
   );
 }
 
