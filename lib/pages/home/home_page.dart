@@ -21,6 +21,7 @@ import 'home_controller.dart';
 
 class HomePage extends GetView<HomeController> {
   final HomeController _prodController = Get.put(HomeController());
+  CarouselController carouselController = new CarouselController();
   String titlexy = 'Accueil';
   List<String> imageList = [];
   @override
@@ -39,25 +40,6 @@ class HomePage extends GetView<HomeController> {
               indicatorColor: Colors.black,
               onTap: (index) {
                 print(index);
-                if (index == 0) {
-                  titlexy = "Accueil";
-                }
-                if (index == 1) {
-                  titlexy = "Noter";
-                }
-                if (index == 2) {
-                  titlexy = "Vidéos";
-                }
-                /*switch (index) {
-                  case 0:
-                    return  controller.title="Accueil";
-
-                  case 1:
-                    return controller.title="Noter";
-
-                  case 2:
-                    return controller.title="Vidéos";
-                }*/
               },
               tabs: [
                 Tab(icon: Icon(Icons.photo_camera)),
@@ -66,7 +48,7 @@ class HomePage extends GetView<HomeController> {
               ],
             ),
             title: Text(
-              titlexy,
+              _prodController.titlex,
               style: TextStyle(color: Colors.white),
             ),
             elevation: 0,
@@ -157,14 +139,17 @@ class HomePage extends GetView<HomeController> {
                                             direction: Axis.horizontal,
                                             allowHalfRating: true,
                                             itemCount: 5,
-                                            itemPadding: EdgeInsets.symmetric(
-                                                horizontal: 4.0),
+                                            itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
                                             itemBuilder: (context, _) => Icon(
                                               Icons.star,
                                               color: Colors.amber,
                                             ),
-                                            onRatingUpdate: (rating) {},
-                                          )
+                                            onRatingUpdate: (rating) {
+                                               print(pageViewIndex);
+                                               pageViewIndex++;
+                                              // carouselController.nextPage();
+                                            },
+                                          ),
                                         ],
                                       ),
                                       decoration: new BoxDecoration(
@@ -309,7 +294,6 @@ Widget _details(context,item,meIndex) {
   );
 }
 
-
 Widget _detailx(context,controller) {
   return Scaffold(
     body: FutureBuilder(
@@ -337,12 +321,13 @@ Widget _detailx(context,controller) {
                         children: [
                           GestureDetector(
                             onTap: () {
-                              Navigator.of(context).push(
+                              Get.to(_details(context, data.reversed.toList(),index));
+                              /*Navigator.of(context).push(
                                   MaterialPageRoute<void>(
                                       builder: (BuildContext
                                       context) {
                                         return _details(context, data.reversed.toList(),index);
-                                      }));
+                                      }));*/
                             },
                             child: Card(
                               shape: RoundedRectangleBorder(
@@ -366,14 +351,7 @@ Widget _detailx(context,controller) {
                                     children: [
                                       IconButton(
                                         onPressed: () {
-                                          Navigator.of(context).push(
-                                              MaterialPageRoute<
-                                                  void>(
-                                                  builder:
-                                                      (BuildContext
-                                                  context) {
-                                                    return _details(context, data,index);
-                                                  }));
+                                          Get.to(_details(context, data.reversed.toList(),index));
                                         },
                                         icon: Icon(
                                           Icons

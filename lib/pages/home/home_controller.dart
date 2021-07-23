@@ -18,6 +18,11 @@ class HomeController extends GetxController {
   List get inventoryList => _inventoryList;
 
   var _selectedChip = 0.obs;
+  final photoIndex = 0.obs;
+
+  final initialPage = 0.obs;
+
+  //get photoIndex => this._photoIndex.value;
   get selectedChip => this._selectedChip.value;
   set selectedChip(index) => this._selectedChip.value = index;
 
@@ -33,11 +38,13 @@ class HomeController extends GetxController {
 
     productBox = Hive.box<Product>(productBoxName);
     //
+    setTabName(0);
   }
   @override
   void dispose() {
     super.dispose();
   }
+
   void readProduct() async {
     Request request = Request(url: 'product');
     request.get().then((value) {
@@ -83,5 +90,20 @@ class HomeController extends GetxController {
         return dataProductChip.toList();
     }
   }
+  String setTabName(int index) {
+    switch (index) {
+      case 0:
+        print(titlex);
+        return  titlex="Accueil";
 
+      case 1:
+        print(titlex);
+        return titlex="Noter";
+
+      case 2:
+        print(titlex);
+        return titlex="Vidéos";
+    }
+    return titlex;
+  }
 }
