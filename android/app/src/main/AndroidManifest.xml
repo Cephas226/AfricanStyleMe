@@ -1,10 +1,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.monstyle">
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    package="com.example.chicmode">
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <application
-        android:requestLegacyExternalStorage="true"
-        android:label="monstyle"
+    <uses-permission android:name="android.permission.INTERNET"/>
+   <application
+        android:label="chicmode"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"

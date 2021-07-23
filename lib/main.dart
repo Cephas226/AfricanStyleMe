@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:getx_app/widget/video_widget/oval-right-clipper.dart';
+import 'package:getx_app/widget/oval-right-clipper.dart';
 import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart';
 import 'model/product_model.dart';
@@ -27,7 +27,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      initialRoute: AppRoutes.DASHBOARD,
+      initialRoute: AppRoutes.SPLASH_SCREEN,
       getPages: AppPages.list,
       debugShowCheckedModeBanner: false,
       theme: AppTheme.light,

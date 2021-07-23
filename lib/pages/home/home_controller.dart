@@ -7,7 +7,7 @@ import 'package:getx_app/model/product_model.dart';
 import 'package:hive/hive.dart';
 import 'package:getx_app/domain/request.dart';
 class HomeController extends GetxController {
-  final String title = 'Accueil';
+  String titlex = 'Accueil';
   RxList<Product> dataProduct = <Product>[].obs;
   RxList<Product> dataProductChip = <Product>[].obs;
   bool favorite= false;

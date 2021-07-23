@@ -22,5 +22,13 @@ class Dataservices {
       return json.decode(response.body);
     return [];
   }
+  static Future<List> fetchVideo() async {
+    final response =
+    await client.get(Uri.parse("https://myafricanstyle.herokuapp.com/video"));
+
+    if (response.statusCode == 200)
+      return json.decode(response.body);
+    return [];
+  }
 
 }

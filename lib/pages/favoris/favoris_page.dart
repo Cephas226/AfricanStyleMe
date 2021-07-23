@@ -4,17 +4,12 @@ import 'package:get/get.dart';
 import 'package:getx_app/model/product_model.dart';
 import 'package:getx_app/pages/favoris/favoris_controller.dart';
 import 'package:getx_app/pages/home/home_page.dart';
-import 'package:getx_app/services/backend_service.dart';
 import 'package:getx_app/widget/photo_widget/photohero.dart';
-import 'package:hive/hive.dart';
-import 'package:transparent_image/transparent_image.dart';
-import 'package:hive_flutter/hive_flutter.dart';
+import 'dart:math' as math;
 
 final FavorisController _favController = Get.put(FavorisController());
 final snackBar = SnackBar(content: Text('Desépinglé avec succès'));
-
 class FavorisPage extends GetView<FavorisController> {
-  double timeDilation = 5.0;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -47,6 +42,7 @@ Widget _builListView() {
         itemBuilder: (context, int index) {
           Product product = box.getAt(index);
           return GestureDetector(
+
               child: ClipRRect(
                 child: Stack(
                   children: <Widget>[
@@ -54,18 +50,19 @@ Widget _builListView() {
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadiusDirectional.circular(20)),
                       clipBehavior: Clip.antiAlias,
-                      child: Container(
+                      child:
+                      Container(
                         padding: const EdgeInsets.all(0.0),
                         //height: double.infinity,
                         color: Color(0xFFF70759),
                         child: PhotoHero(
-
-                          photo: product.url,
+                          photo:  product.url,
                           width: double.infinity,
                           onTap: () {
                             Navigator.of(context).push(MaterialPageRoute<void>(
                                 builder: (BuildContext context) {
                                   return Scaffold(
+
                                     floatingActionButton: buildSpeedDial(),
                                     appBar: AppBar(
                                       backgroundColor: Color(0xFFF70759),
@@ -81,9 +78,9 @@ Widget _builListView() {
                                           child: Container(
                                             padding: const EdgeInsets.all(0.0),
                                             height: double.infinity,
-                                            color: Colors.white38,
+                                            color: Color(0xFFF70759),
                                             child: PhotoHero(
-                                              photo:  product.url,
+                                              photo: product.url,
                                               width: double.infinity,
                                               height: double.infinity,
                                               onTap: () {
@@ -92,41 +89,61 @@ Widget _builListView() {
                                             ),
                                           ),
                                         ),
-                                        Positioned(
-                                            bottom: 90.0,
-                                            right: 0.0,
-                                            left: 0.0,
-                                            child: Container(
-                                              width: 200,
-                                              decoration: new BoxDecoration(
-                                                  color: Colors.white,
-                                                  borderRadius: BorderRadius.all(
-                                                      Radius.circular(12))),
-                                              child:
-                                              Row(
-                                                mainAxisAlignment: MainAxisAlignment.center,
-
-                                                children: [
-                                                  Icon(
-                                                    Icons.remove_red_eye_sharp,
-                                                    color: Colors.blue,
-                                                  ),
-                                                  Text("20",
-                                                    style: TextStyle(color: Colors.black),
-                                                  ),
-                                                  SizedBox(
-                                                    width: 50,
-                                                  ),
-                                                  Icon(
-                                                    Icons.stars_rounded,
-                                                    color: Colors.blue,
-                                                  ),
-                                                  Text("4/5",
-                                                    style: TextStyle(color: Colors.black),
-                                                  ),
-                                                ],
-                                              ),
-                                            )),
+                                        Padding(padding: EdgeInsets.only(bottom:65, right:10),
+                                            child:Align(alignment: Alignment.bottomRight,
+                                              child: Container(
+                                                width: 70,
+                                                height: 400,
+                                                child: Column(
+                                                  mainAxisAlignment: MainAxisAlignment.end,
+                                                  children: <Widget>[
+                                                    Container(
+                                                      padding: EdgeInsets.only(bottom:25),
+                                                      child: Column(
+                                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                                        children: <Widget>[
+                                                          Icon(Icons.favorite, size:35, color: Colors.white),
+                                                          Text('427.9K', style:TextStyle(color: Colors.white))
+                                                        ],
+                                                      ),
+                                                    ),
+                                                    Container(
+                                                      padding: EdgeInsets.only(bottom:20),
+                                                      child: Column(
+                                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                                        children: <Widget>[
+                                                          Transform(alignment:Alignment.center,transform: Matrix4.rotationY(math.pi), child: Icon(Icons.sms, size:35, color:Colors.white)),
+                                                          Text('2051', style:TextStyle(color: Colors.white))
+                                                        ],
+                                                      ),
+                                                    ),
+                                                    Container(
+                                                      padding: EdgeInsets.only(bottom:50),
+                                                      child: Column(
+                                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                                        children: <Widget>[
+                                                          Transform(alignment:Alignment.center,transform: Matrix4.rotationY(math.pi), child: Icon(Icons.reply, size:35, color:Colors.white)),
+                                                          Text('Partager', style:TextStyle(color: Colors.white))
+                                                        ],
+                                                      ),
+                                                    ),
+                                                    /*AnimatedBuilder(
+                      animation: animationController,
+                      child: CircleAvatar(
+                        radius: 22,
+                        backgroundColor: Color(0x222222).withOpacity(1),
+                        child: CircleAvatar(
+                          radius: 12,
+                          backgroundImage: AssetImage('assets/oboy.jpg'),
+                        ),
+                      ),
+                      builder: (context, _widget){
+                        return Transform.rotate(angle: animationController.value*6.3,
+                            child:_widget);
+                      },)*/
+                                                  ],
+                                                ),
+                                              ),))
                                       ],
                                     ),
                                   );
@@ -143,17 +160,17 @@ Widget _builListView() {
                         child: Row(
                           children: [
                             IconButton(
-                                onPressed: () => {},
+                                onPressed: ()=>{},
                                 icon: FavoriteButton(
                                     iconSize: 40,
                                     isFavorite: true,
                                     valueChanged: (_isFavorite) {
-                                      if (!_isFavorite) {
+                                      if (!_isFavorite){
                                         _favController.removeProduct(index);
-                                        ScaffoldMessenger.of(context)
-                                            .showSnackBar(snackBar);
+                                        ScaffoldMessenger.of(context).showSnackBar(snackBar);
                                       }
-                                    })),
+                                    }
+                                )),
                           ],
                         ),
                         decoration: new BoxDecoration(

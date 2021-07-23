@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:typed_data';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
@@ -6,7 +7,9 @@ import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:get/get.dart';
 import 'package:getx_app/model/product_model.dart';
-import 'package:getx_app/pages/videos/video_page.dart';
+import 'package:getx_app/pages/videos/tik.dart';
+import 'dart:math' as math;
+import 'package:video_player/video_player.dart';
 import 'package:getx_app/services/backend_service.dart';
 import 'package:getx_app/widget/photo_widget/photohero.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
@@ -15,11 +18,10 @@ import 'package:transparent_image/transparent_image.dart';
 import 'package:favorite_button/favorite_button.dart';
 import '../../main.dart';
 import 'home_controller.dart';
-import 'package:share/share.dart';
 
 class HomePage extends GetView<HomeController> {
   final HomeController _prodController = Get.put(HomeController());
-
+  String titlexy = 'Accueil';
   List<String> imageList = [];
   @override
   Widget build(BuildContext context) {
@@ -36,7 +38,26 @@ class HomePage extends GetView<HomeController> {
             bottom: TabBar(
               indicatorColor: Colors.black,
               onTap: (index) {
-                // Tab index when user select it, it start from zero
+                print(index);
+                if(index==0) {
+                  titlexy="Accueil";
+                }
+                if(index==1) {
+                  titlexy="Noter";
+                }
+                if(index==2) {
+                  titlexy="Vidéos";
+                }
+                /*switch (index) {
+                  case 0:
+                    return  controller.title="Accueil";
+
+                  case 1:
+                    return controller.title="Noter";
+
+                  case 2:
+                    return controller.title="Vidéos";
+                }*/
               },
               tabs: [
                 Tab(icon: Icon(Icons.photo_camera)),
@@ -45,7 +66,7 @@ class HomePage extends GetView<HomeController> {
               ],
             ),
             title: Text(
-              controller.title,
+              titlexy,
               style: TextStyle(color: Colors.white),
             ),
             elevation: 0,
@@ -207,7 +228,7 @@ class HomePage extends GetView<HomeController> {
                                 initialPage: 2,
                                 viewportFraction: 1,
                                 aspectRatio: 16 / 9,
-                                enableInfiniteScroll: true,
+                                enableInfiniteScroll: false,
                                 autoPlay: false,
                               ),
                               itemBuilder: (BuildContext context, int itemIndex,
@@ -232,14 +253,6 @@ class HomePage extends GetView<HomeController> {
                                           ),
                                         ),
                                       ),
-                                      /*Container(
-                                        height: 600,
-                                        width: double.infinity,
-                                        child: FadeInImage.memoryNetwork(
-                                            placeholder: kTransparentImage,
-                                            image: data[itemIndex]["url"],
-                                            fit: BoxFit.fill),
-                                      ),*/
                                       Positioned(
                                         left: 80,
                                         top: 500,
@@ -277,8 +290,10 @@ class HomePage extends GetView<HomeController> {
               ),
               Center(
                 child: FutureBuilder(
-                    future: Dataservices.fetchProduct(),
+                    future: Dataservices.fetchVideo(),
                     builder: (context, AsyncSnapshot<List<dynamic>> snapshot) {
+                      final data = snapshot.data;
+                      print(data);
                       return snapshot.hasData
                           ? CarouselSlider.builder(
                               itemCount: snapshot.data.length,
@@ -288,7 +303,7 @@ class HomePage extends GetView<HomeController> {
                                 initialPage: 2,
                                 viewportFraction: 1,
                                 aspectRatio: 16 / 9,
-                                enableInfiniteScroll: true,
+                                enableInfiniteScroll: false,
                                 autoPlay: false,
                               ),
                               itemBuilder: (BuildContext context, int itemIndex,
@@ -296,7 +311,13 @@ class HomePage extends GetView<HomeController> {
                                   ClipRRect(
                                 child: Stack(
                                   children: <Widget>[
-                                    VideosPage(),
+                                    //Tik(),
+                                    Tik(
+                                      videoPlayerController: VideoPlayerController.network(
+                                        data[itemIndex]["url"],
+                                      ),
+                                      looping: true,
+                                    ),
                                   ],
                                 ),
                               ),
@@ -338,40 +359,61 @@ Widget _details(context, Product item) {
             ),
           ),
         ),
-        Positioned(
-            bottom: 90.0,
-            right: 0.0,
-            left: 0.0,
-            child: Container(
-              width: 200,
-              decoration: new BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.all(Radius.circular(12))),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(
-                    Icons.remove_red_eye_sharp,
-                    color: Colors.blue,
-                  ),
-                  Text(
-                    "20",
-                    style: TextStyle(color: Colors.black),
-                  ),
-                  SizedBox(
-                    width: 50,
-                  ),
-                  Icon(
-                    Icons.stars_rounded,
-                    color: Colors.blue,
-                  ),
-                  Text(
-                    "4/5",
-                    style: TextStyle(color: Colors.black),
-                  ),
-                ],
-              ),
-            )),
+        Padding(padding: EdgeInsets.only(bottom:65, right:10),
+            child:Align(alignment: Alignment.bottomRight,
+              child: Container(
+                width: 70,
+                height: 400,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: <Widget>[
+                    Container(
+                      padding: EdgeInsets.only(bottom:25),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: <Widget>[
+                          Icon(Icons.favorite, size:35, color: Colors.white),
+                          Text('427.9K', style:TextStyle(color: Colors.white))
+                        ],
+                      ),
+                    ),
+                    Container(
+                      padding: EdgeInsets.only(bottom:20),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: <Widget>[
+                          Transform(alignment:Alignment.center,transform: Matrix4.rotationY(math.pi), child: Icon(Icons.sms, size:35, color:Colors.white)),
+                          Text('2051', style:TextStyle(color: Colors.white))
+                        ],
+                      ),
+                    ),
+                    Container(
+                      padding: EdgeInsets.only(bottom:50),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: <Widget>[
+                          Transform(alignment:Alignment.center,transform: Matrix4.rotationY(math.pi), child: Icon(Icons.reply, size:35, color:Colors.white)),
+                          Text('Partager', style:TextStyle(color: Colors.white))
+                        ],
+                      ),
+                    ),
+                    /*AnimatedBuilder(
+                      animation: animationController,
+                      child: CircleAvatar(
+                        radius: 22,
+                        backgroundColor: Color(0x222222).withOpacity(1),
+                        child: CircleAvatar(
+                          radius: 12,
+                          backgroundImage: AssetImage('assets/oboy.jpg'),
+                        ),
+                      ),
+                      builder: (context, _widget){
+                        return Transform.rotate(angle: animationController.value*6.3,
+                            child:_widget);
+                      },)*/
+                  ],
+                ),
+              ),))
       ],
     ),
   );
@@ -386,7 +428,6 @@ _saveImage(url, name, context) async {
       name: "model" + name.toString());
   ScaffoldMessenger.of(context)
       .showSnackBar(SnackBar(content: Text('Image sauvegardée avec succès')));
-  print(result);
 }
 SpeedDial buildSpeedDial() {
   return SpeedDial(
@@ -415,7 +456,9 @@ SpeedDial buildSpeedDial() {
       SpeedDialChild(
         child: Icon(Icons.share, color: Colors.white),
         backgroundColor: Colors.blueAccent,
-        onTap: () => Share.share('https://myafricanstyle.herokuapp.com/files/53b7cd56-ae18-4277-ab94-6a929b63f739', subject: 'Look what I made!'),
+        onTap: () async => {
+
+       },
         labelStyle:
         TextStyle(fontWeight: FontWeight.w500, color: Colors.white),
         labelBackgroundColor: Colors.black,
@@ -424,15 +467,13 @@ SpeedDial buildSpeedDial() {
   );
 }
 
-_onShareData(BuildContext context,url) async {
+/*
+Future<List<String>> pickFile() async {
+  var client = http.Client();
+  var response = await client.get(Uri.parse("https://myafricanstyle.herokuapp.com/files/b879a5c4-ab42-43d7-96f7-b1c38e15630d"));
+  Share.shareFiles(response);
+  */
+/*final result = await FilePicker.platform.pickFiles(allowMultiple: true);
+  return result == null ? <String>[] : result.paths;*//*
 
-  final RenderBox box = context.findRenderObject();
-
-  if (url.isNotEmpty) {
-    await Share.shareFiles(url,
-        sharePositionOrigin: box.localToGlobal(Offset.zero) & box.size);
-  } else {
-    await Share.share(url,
-        sharePositionOrigin: box.localToGlobal(Offset.zero) & box.size);
-  }
-}
+}*/
