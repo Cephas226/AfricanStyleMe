@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'dart:typed_data';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
@@ -7,7 +6,8 @@ import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:get/get.dart';
 import 'package:getx_app/model/product_model.dart';
-import 'package:getx_app/pages/videos/tik.dart';
+import 'package:getx_app/pages/videos/took.dart';
+import 'package:tiktoklikescroller/tiktoklikescroller.dart';
 import 'dart:math' as math;
 import 'package:video_player/video_player.dart';
 import 'package:getx_app/services/backend_service.dart';
@@ -39,14 +39,14 @@ class HomePage extends GetView<HomeController> {
               indicatorColor: Colors.black,
               onTap: (index) {
                 print(index);
-                if(index==0) {
-                  titlexy="Accueil";
+                if (index == 0) {
+                  titlexy = "Accueil";
                 }
-                if(index==1) {
-                  titlexy="Noter";
+                if (index == 1) {
+                  titlexy = "Noter";
                 }
-                if(index==2) {
-                  titlexy="Vidéos";
+                if (index == 2) {
+                  titlexy = "Vidéos";
                 }
                 /*switch (index) {
                   case 0:
@@ -84,15 +84,17 @@ class HomePage extends GetView<HomeController> {
                           children: List<Widget>.generate(4, (int index) {
                             return ChoiceChip(
                               label: Text(_chipLabel[index]),
-                              selected:_prodController.selectedChip == index,
+                              selected: _prodController.selectedChip == index,
                               onSelected: (bool selected) {
                                 _prodController.selectedChip =
-                                selected ? index : null;
-                                _prodController.getChipProduct(productChip.values[_prodController.selectedChip]);
+                                    selected ? index : null;
+                                _prodController.getChipProduct(productChip
+                                    .values[_prodController.selectedChip]);
                               },
                             );
                           }))),
-                      Obx(() => Expanded(
+                      Obx(
+                        () => Expanded(
                           child: new Padding(
                             padding: const EdgeInsets.all(4.0),
                             child: new StaggeredGridView.count(
@@ -100,15 +102,14 @@ class HomePage extends GetView<HomeController> {
                               padding: const EdgeInsets.all(2.0),
                               children: _prodController.dataProductChip
                                   .map<Widget>((item) {
-                                return new
-                                Container(
+                                return new Container(
                                   decoration: BoxDecoration(
                                       color: Colors.transparent,
                                       borderRadius: BorderRadius.all(
                                           Radius.circular(12))),
                                   child: ClipRRect(
                                       borderRadius:
-                                      BorderRadius.all(Radius.circular(12)),
+                                          BorderRadius.all(Radius.circular(12)),
                                       child: Stack(
                                         fit: StackFit.passthrough,
                                         overflow: Overflow.visible,
@@ -118,19 +119,19 @@ class HomePage extends GetView<HomeController> {
                                               Navigator.of(context).push(
                                                   MaterialPageRoute<void>(
                                                       builder: (BuildContext
-                                                      context) {
-                                                        return _details(context, item);
-                                                      }));
+                                                          context) {
+                                                return _details(context, item);
+                                              }));
                                             },
                                             child: Card(
                                               shape: RoundedRectangleBorder(
                                                   borderRadius:
-                                                  BorderRadiusDirectional
-                                                      .circular(20)),
+                                                      BorderRadiusDirectional
+                                                          .circular(20)),
                                               clipBehavior: Clip.antiAlias,
                                               child: FadeInImage.memoryNetwork(
                                                   placeholder:
-                                                  kTransparentImage,
+                                                      kTransparentImage,
                                                   image: item.url,
                                                   fit: BoxFit.contain),
                                             ),
@@ -146,13 +147,13 @@ class HomePage extends GetView<HomeController> {
                                                         onPressed: () {
                                                           Navigator.of(context).push(
                                                               MaterialPageRoute<
-                                                                  void>(
+                                                                      void>(
                                                                   builder:
                                                                       (BuildContext
-                                                                  context) {
-                                                                    return _details(
-                                                                        context, item);
-                                                                  }));
+                                                                          context) {
+                                                            return _details(
+                                                                context, item);
+                                                          }));
                                                         },
                                                         icon: Icon(
                                                           Icons
@@ -168,32 +169,33 @@ class HomePage extends GetView<HomeController> {
                                                               valueChanged:
                                                                   (_isFavorite) {
                                                                 if (_isFavorite) {
-                                                                  _prodController.addProduct(
-                                                                      item,
-                                                                      context);
+                                                                  _prodController
+                                                                      .addProduct(
+                                                                          item,
+                                                                          context);
                                                                 }
                                                               })),
                                                       IconButton(
                                                           onPressed: () async =>
-                                                          {
-                                                            _saveImage(
-                                                                item.url,
-                                                                item.productId,
-                                                                context),
-                                                          },
+                                                              {
+                                                                _saveImage(
+                                                                    item.url,
+                                                                    item.productId,
+                                                                    context),
+                                                              },
                                                           icon: Icon(
                                                             Icons.file_download,
                                                             color:
-                                                            Colors.white70,
+                                                                Colors.white70,
                                                           )),
                                                     ],
                                                   ),
                                                   decoration: new BoxDecoration(
                                                       color: Colors.black26,
                                                       borderRadius:
-                                                      BorderRadius.all(
-                                                          Radius.circular(
-                                                              10))),
+                                                          BorderRadius.all(
+                                                              Radius.circular(
+                                                                  10))),
                                                 ),
                                               )),
                                         ],
@@ -234,96 +236,64 @@ class HomePage extends GetView<HomeController> {
                               itemBuilder: (BuildContext context, int itemIndex,
                                       int pageViewIndex) =>
                                   Stack(
-                                    children: <Widget>[
-                                      Card(
-                                        shape: RoundedRectangleBorder(
-                                            borderRadius: BorderRadiusDirectional.circular(20)),
-                                        clipBehavior: Clip.antiAlias,
-                                        child: Container(
-                                          padding: const EdgeInsets.all(0.0),
-                                          height: double.infinity,
-                                          color: Color(0xFFF70759),
-                                          child: PhotoHero(
-                                            photo: data[itemIndex]["url"],
-                                            width: double.infinity,
-                                            height: double.infinity,
-                                            onTap: () {
-                                              print("cooly");
-                                            },
-                                          ),
-                                        ),
+                                children: <Widget>[
+                                  Card(
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadiusDirectional.circular(
+                                                20)),
+                                    clipBehavior: Clip.antiAlias,
+                                    child: Container(
+                                      padding: const EdgeInsets.all(0.0),
+                                      height: double.infinity,
+                                      color: Color(0xFFF70759),
+                                      child: PhotoHero(
+                                        photo: data[itemIndex]["url"],
+                                        width: double.infinity,
+                                        height: double.infinity,
+                                        onTap: () {
+                                          print("cooly");
+                                        },
                                       ),
-                                      Positioned(
-                                        left: 80,
-                                        top: 500,
-                                        child: Container(
-                                          child: Row(
-                                            children: [
-                                              RatingBar.builder(
-                                                initialRating: 3,
-                                                minRating: 1,
-                                                direction: Axis.horizontal,
-                                                allowHalfRating: true,
-                                                itemCount: 5,
-                                                itemPadding: EdgeInsets.symmetric(
-                                                    horizontal: 4.0),
-                                                itemBuilder: (context, _) => Icon(
-                                                  Icons.star,
-                                                  color: Colors.amber,
-                                                ),
-                                                onRatingUpdate: (rating) {
-                                                },
-                                              )
-                                            ],
-                                          ),
-                                          decoration: new BoxDecoration(
-                                              color: Colors.white24,
-                                              borderRadius: BorderRadius.all(
-                                                  Radius.circular(12))),
-                                        ),
-                                      ),
-                                    ],
+                                    ),
                                   ),
+                                  Positioned(
+                                    left: 80,
+                                    top: 500,
+                                    child: Container(
+                                      child: Row(
+                                        children: [
+                                          RatingBar.builder(
+                                            initialRating: 3,
+                                            minRating: 1,
+                                            direction: Axis.horizontal,
+                                            allowHalfRating: true,
+                                            itemCount: 5,
+                                            itemPadding: EdgeInsets.symmetric(
+                                                horizontal: 4.0),
+                                            itemBuilder: (context, _) => Icon(
+                                              Icons.star,
+                                              color: Colors.amber,
+                                            ),
+                                            onRatingUpdate: (rating) {},
+                                          )
+                                        ],
+                                      ),
+                                      decoration: new BoxDecoration(
+                                          color: Colors.white24,
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(12))),
+                                    ),
+                                  ),
+                                ],
+                              ),
                             )
                           : const CircularProgressIndicator();
                     }),
               ),
               Center(
-                child: FutureBuilder(
-                    future: Dataservices.fetchVideo(),
-                    builder: (context, AsyncSnapshot<List<dynamic>> snapshot) {
-                      final data = snapshot.data;
-                      print(data);
-                      return snapshot.hasData
-                          ? CarouselSlider.builder(
-                              itemCount: snapshot.data.length,
-                              options: CarouselOptions(
-                                height: 800,
-                                scrollDirection: Axis.vertical,
-                                initialPage: 2,
-                                viewportFraction: 1,
-                                aspectRatio: 16 / 9,
-                                enableInfiniteScroll: false,
-                                autoPlay: false,
-                              ),
-                              itemBuilder: (BuildContext context, int itemIndex,
-                                      int pageViewIndex) =>
-                                  ClipRRect(
-                                child: Stack(
-                                  children: <Widget>[
-                                    //Tik(),
-                                    Tik(
-                                      videoPlayerController: VideoPlayerController.network(
-                                        data[itemIndex]["url"],
-                                      ),
-                                      looping: true,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            )
-                          : const CircularProgressIndicator();
-                    }),
+                child:
+                TokPage(),
               ),
             ],
           )),
@@ -359,8 +329,10 @@ Widget _details(context, Product item) {
             ),
           ),
         ),
-        Padding(padding: EdgeInsets.only(bottom:65, right:10),
-            child:Align(alignment: Alignment.bottomRight,
+        Padding(
+            padding: EdgeInsets.only(bottom: 65, right: 10),
+            child: Align(
+              alignment: Alignment.bottomRight,
               child: Container(
                 width: 70,
                 height: 400,
@@ -368,32 +340,41 @@ Widget _details(context, Product item) {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: <Widget>[
                     Container(
-                      padding: EdgeInsets.only(bottom:25),
+                      padding: EdgeInsets.only(bottom: 25),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: <Widget>[
-                          Icon(Icons.favorite, size:35, color: Colors.white),
-                          Text('427.9K', style:TextStyle(color: Colors.white))
+                          Icon(Icons.favorite, size: 35, color: Colors.white),
+                          Text('427.9K', style: TextStyle(color: Colors.white))
                         ],
                       ),
                     ),
                     Container(
-                      padding: EdgeInsets.only(bottom:20),
+                      padding: EdgeInsets.only(bottom: 20),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: <Widget>[
-                          Transform(alignment:Alignment.center,transform: Matrix4.rotationY(math.pi), child: Icon(Icons.sms, size:35, color:Colors.white)),
-                          Text('2051', style:TextStyle(color: Colors.white))
+                          Transform(
+                              alignment: Alignment.center,
+                              transform: Matrix4.rotationY(math.pi),
+                              child: Icon(Icons.sms,
+                                  size: 35, color: Colors.white)),
+                          Text('2051', style: TextStyle(color: Colors.white))
                         ],
                       ),
                     ),
                     Container(
-                      padding: EdgeInsets.only(bottom:50),
+                      padding: EdgeInsets.only(bottom: 50),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: <Widget>[
-                          Transform(alignment:Alignment.center,transform: Matrix4.rotationY(math.pi), child: Icon(Icons.reply, size:35, color:Colors.white)),
-                          Text('Partager', style:TextStyle(color: Colors.white))
+                          Transform(
+                              alignment: Alignment.center,
+                              transform: Matrix4.rotationY(math.pi),
+                              child: Icon(Icons.reply,
+                                  size: 35, color: Colors.white)),
+                          Text('Partager',
+                              style: TextStyle(color: Colors.white))
                         ],
                       ),
                     ),
@@ -413,7 +394,8 @@ Widget _details(context, Product item) {
                       },)*/
                   ],
                 ),
-              ),))
+              ),
+            ))
       ],
     ),
   );
@@ -429,6 +411,7 @@ _saveImage(url, name, context) async {
   ScaffoldMessenger.of(context)
       .showSnackBar(SnackBar(content: Text('Image sauvegardée avec succès')));
 }
+
 SpeedDial buildSpeedDial() {
   return SpeedDial(
     animatedIcon: AnimatedIcons.menu_close,
@@ -441,26 +424,21 @@ SpeedDial buildSpeedDial() {
         child: Icon(Icons.file_download, color: Colors.white),
         backgroundColor: Colors.blueAccent,
         onTap: () => print('Pressed Read Later'),
-        labelStyle:
-        TextStyle(fontWeight: FontWeight.w500, color: Colors.white),
+        labelStyle: TextStyle(fontWeight: FontWeight.w500, color: Colors.white),
         labelBackgroundColor: Colors.black,
       ),
       SpeedDialChild(
         child: Icon(Icons.favorite, color: Colors.white),
         backgroundColor: Colors.blueAccent,
         onTap: () => print('Pressed Write'),
-        labelStyle:
-        TextStyle(fontWeight: FontWeight.w500, color: Colors.white),
+        labelStyle: TextStyle(fontWeight: FontWeight.w500, color: Colors.white),
         labelBackgroundColor: Colors.black,
       ),
       SpeedDialChild(
         child: Icon(Icons.share, color: Colors.white),
         backgroundColor: Colors.blueAccent,
-        onTap: () async => {
-
-       },
-        labelStyle:
-        TextStyle(fontWeight: FontWeight.w500, color: Colors.white),
+        onTap: () async => {},
+        labelStyle: TextStyle(fontWeight: FontWeight.w500, color: Colors.white),
         labelBackgroundColor: Colors.black,
       ),
     ],
@@ -474,6 +452,6 @@ Future<List<String>> pickFile() async {
   Share.shareFiles(response);
   */
 /*final result = await FilePicker.platform.pickFiles(allowMultiple: true);
-  return result == null ? <String>[] : result.paths;*//*
+  return result == null ? <String>[] : result.paths;*/ /*
 
 }*/

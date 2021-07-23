@@ -29,7 +29,6 @@ class FavorisController extends GetxController {
         productList.add(tmp);
       }
     }
-    productList.forEach((element) {print(element);});
     return productList;
   }
   void removeProduct(int id) async{

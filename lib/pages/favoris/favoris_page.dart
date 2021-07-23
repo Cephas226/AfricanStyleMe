@@ -30,7 +30,6 @@ Widget _builListView() {
   return ValueListenableBuilder(
     valueListenable: _favController.valueListenable,
     builder: (context, box, _) {
-      print(box.values);
       if (box.values.length == 0)
         return Center(
           child: Text("Aucune image"),

@@ -1,6 +1,4 @@
 import 'package:get/get.dart';
-import 'package:flutter/material.dart';
-import 'package:getx_app/pages/dashboard/dashboard_page.dart';
 class SplashScreenController extends GetxController {
 
   @override

@@ -1,12 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:getx_app/pages/categories/categories_page.dart';
-import 'package:getx_app/pages/home/home_page.dart';
-import 'package:getx_app/pages/favoris/favoris_page.dart';
-import 'package:getx_app/themes/color_theme.dart';
-import 'package:getx_app/themes/text_theme.dart';
-import '../../main.dart';
 import 'splash_screen_controller.dart';
 
 class SplashScreenView extends GetView<SplashScreenController> {
