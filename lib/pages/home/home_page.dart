@@ -93,127 +93,12 @@ class HomePage extends GetView<HomeController> {
                               },
                             );
                           }))),
-                      Obx(
-                        () => Expanded(
-                          child: new Padding(
-                            padding: const EdgeInsets.all(4.0),
-                            child: new StaggeredGridView.count(
-                              crossAxisCount: 4,
-                              padding: const EdgeInsets.all(2.0),
-                              children: _prodController.dataProductChip
-                                  .map<Widget>((item) {
-                                return new Container(
-                                  decoration: BoxDecoration(
-                                      color: Colors.transparent,
-                                      borderRadius: BorderRadius.all(
-                                          Radius.circular(12))),
-                                  child: ClipRRect(
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(12)),
-                                      child: Stack(
-                                        fit: StackFit.passthrough,
-                                        overflow: Overflow.visible,
-                                        children: [
-                                          GestureDetector(
-                                            onTap: () {
-                                              Get.to(() => _details(context, item))
-                                                  /*Navigator.of(context).push(
-                                                  MaterialPageRoute<void>(
-                                                      builder: (BuildContext
-                                                          context) {
-                                                return _details(context, item);
-                                              }))*/
-                                                  ;
-                                            },
-                                            child: Card(
-                                              shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadiusDirectional
-                                                          .circular(20)),
-                                              clipBehavior: Clip.antiAlias,
-                                              child: FadeInImage.memoryNetwork(
-                                                  placeholder:
-                                                      kTransparentImage,
-                                                  image: item.url,
-                                                  fit: BoxFit.contain),
-                                            ),
-                                          ),
-                                          Positioned(
-                                              left: 130,
-                                              top: 0,
-                                              child: Center(
-                                                child: Container(
-                                                  child: Column(
-                                                    children: [
-                                                      IconButton(
-                                                        onPressed: () {
-                                                          Navigator.of(context).push(
-                                                              MaterialPageRoute<
-                                                                      void>(
-                                                                  builder:
-                                                                      (BuildContext
-                                                                          context) {
-                                                            return _details(
-                                                                context, item);
-                                                          }));
-                                                        },
-                                                        icon: Icon(
-                                                          Icons
-                                                              .remove_red_eye_sharp,
-                                                          color: Colors.white70,
-                                                        ),
-                                                      ),
-                                                      IconButton(
-                                                          onPressed: () => {},
-                                                          icon: FavoriteButton(
-                                                              iconSize: 40,
-                                                              isFavorite: false,
-                                                              valueChanged:
-                                                                  (_isFavorite) {
-                                                                if (_isFavorite) {
-                                                                  _prodController
-                                                                      .addProduct(
-                                                                          item,
-                                                                          context);
-                                                                }
-                                                              })),
-                                                      IconButton(
-                                                          onPressed: () async =>
-                                                              {
-                                                                _saveImage(
-                                                                    item.url,
-                                                                    item.productId,
-                                                                    context),
-                                                              },
-                                                          icon: Icon(
-                                                            Icons.file_download,
-                                                            color:
-                                                                Colors.white70,
-                                                          )),
-                                                    ],
-                                                  ),
-                                                  decoration: new BoxDecoration(
-                                                      color: Colors.black26,
-                                                      borderRadius:
-                                                          BorderRadius.all(
-                                                              Radius.circular(
-                                                                  10))),
-                                                ),
-                                              )),
-                                        ],
-                                      )),
-                                );
-                              }).toList(),
-                              staggeredTiles: _prodController.dataProductChip
-                                  .map<StaggeredTile>(
-                                      (_) => StaggeredTile.fit(2))
-                                  .toList(),
-                              mainAxisSpacing: 3.0,
-                              crossAxisSpacing: 4.0, // add some space
-                            ),
-                          ),
+                      Expanded(
+                        child: new Padding(
+                          padding: const EdgeInsets.all(4.0),
+                          child:_detailx(context,_prodController),
                         ),
-                      ),
+                      )
                     ],
                   ),
                 ),
@@ -303,7 +188,7 @@ class HomePage extends GetView<HomeController> {
   }
 }
 
-Widget _details(context, Product item) {
+Widget _details(context,item,meIndex) {
   return Scaffold(
     floatingActionButton: buildSpeedDial(),
     appBar: AppBar(
@@ -315,12 +200,13 @@ Widget _details(context, Product item) {
         builder: (context, AsyncSnapshot<List<dynamic>> snapshot) {
           final data = snapshot.data;
           return snapshot.hasData
-              ? CarouselSlider.builder(
+              ?
+          CarouselSlider.builder(
                   itemCount: snapshot.data.length,
                   options: CarouselOptions(
                     height: 800,
                     scrollDirection: Axis.vertical,
-                    initialPage: 2,
+                    initialPage: meIndex,
                     viewportFraction: 1,
                     aspectRatio: 16 / 9,
                     enableInfiniteScroll: false,
@@ -422,6 +308,134 @@ Widget _details(context, Product item) {
         }),
   );
 }
+
+
+Widget _detailx(context,controller) {
+  return Scaffold(
+    body: FutureBuilder(
+        future: Dataservices.fetchProduct(),
+        builder: (context, AsyncSnapshot<List<dynamic>> snapshot) {
+          final data = snapshot.data;
+          return snapshot.hasData
+              ?
+          StaggeredGridView.countBuilder(
+            crossAxisCount: 4,
+            padding: const EdgeInsets.all(2.0),
+            itemCount: data.length,
+            itemBuilder: (BuildContext context, int index) =>
+                Container(
+                  decoration: BoxDecoration(
+                      color: Colors.transparent,
+                      borderRadius: BorderRadius.all(
+                          Radius.circular(12))),
+                  child:
+                  ClipRRect(
+                      borderRadius:
+                      BorderRadius.all(Radius.circular(12)),
+                      child: Stack(
+                        clipBehavior: Clip.none, fit: StackFit.passthrough,
+                        children: [
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.of(context).push(
+                                  MaterialPageRoute<void>(
+                                      builder: (BuildContext
+                                      context) {
+                                        return _details(context, data.reversed.toList(),index);
+                                      }));
+                            },
+                            child: Card(
+                              shape: RoundedRectangleBorder(
+                                  borderRadius:
+                                  BorderRadiusDirectional
+                                      .circular(20)),
+                              clipBehavior: Clip.antiAlias,
+                              child: FadeInImage.memoryNetwork(
+                                  placeholder:
+                                  kTransparentImage,
+                                  image: data.reversed.toList()[index]["url"],
+                                  fit: BoxFit.cover),
+                            ),
+                          ),
+                          Positioned(
+                              left: 130,
+                              top: 0,
+                              child: Center(
+                                child: Container(
+                                  child: Column(
+                                    children: [
+                                      IconButton(
+                                        onPressed: () {
+                                          Navigator.of(context).push(
+                                              MaterialPageRoute<
+                                                  void>(
+                                                  builder:
+                                                      (BuildContext
+                                                  context) {
+                                                    return _details(context, data,index);
+                                                  }));
+                                        },
+                                        icon: Icon(
+                                          Icons
+                                              .remove_red_eye_sharp,
+                                          color: Colors.white70,
+                                        ),
+                                      ),
+                                      IconButton(
+                                          onPressed: () => {},
+                                          icon: FavoriteButton(
+                                              iconSize: 40,
+                                              isFavorite: false,
+                                              valueChanged:
+                                                  (_isFavorite) {
+                                                if (_isFavorite) {
+                                                  controller.addProduct(
+                                                      data,
+                                                      context);
+                                                }
+                                              })),
+                                      IconButton(
+                                          onPressed: () async =>
+                                          {
+                                            _saveImage(
+                                                data[index]["url"],
+                                                data[index]["productId"],
+                                                context),
+                                          },
+                                          icon: Icon(
+                                            Icons.file_download,
+                                            color:
+                                            Colors.white70,
+                                          )),
+                                    ],
+                                  ),
+                                  decoration: new BoxDecoration(
+                                      color: Colors.black26,
+                                      borderRadius:
+                                      BorderRadius.all(
+                                          Radius.circular(
+                                              10))),
+                                ),
+                              )),
+                        ],
+                      )),
+                ),
+            staggeredTileBuilder: (int index) =>
+            new StaggeredTile.fit(2),
+            mainAxisSpacing: 3.0,
+            crossAxisSpacing: 4.0, //
+          )
+              : Center(
+            child: CircularProgressIndicator(),
+          );
+        }),
+  );
+}
+
+
+
+
+
 
 _saveImage(url, name, context) async {
   var client = http.Client();
